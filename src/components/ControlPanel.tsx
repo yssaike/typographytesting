@@ -1,9 +1,11 @@
 import React from 'react';
 import { Settings, Download, Copy, Check } from 'lucide-react';
 import { TypographySettings } from '../types/typography';
+import { FontPairing } from '../data/fontPairings';
 import FontSelector from './FontSelector';
 import SliderControl from './SliderControl';
 import ResponsiveControls from './ResponsiveControls';
+import FontPairingGenerator from './FontPairingGenerator';
 
 interface ControlPanelProps {
   settings: TypographySettings;
@@ -19,6 +21,13 @@ export default function ControlPanel({
   onBreakpointChange
 }: ControlPanelProps) {
   const [copied, setCopied] = React.useState(false);
+
+  const handleApplyPairing = (pairing: FontPairing) => {
+    onSettingsChange({
+      headingFont: pairing.headingFont,
+      bodyFont: pairing.bodyFont
+    });
+  };
 
   const generateCSS = () => {
     return `/* Typography Settings */
@@ -63,6 +72,12 @@ export default function ControlPanel({
 
   return (
     <div className="space-y-6">
+      {/* Font Pairing Generator */}
+      <FontPairingGenerator
+        onApplyPairing={handleApplyPairing}
+        currentSettings={settings}
+      />
+
       {/* Font Selection */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
         <div className="flex items-center gap-2 mb-4">

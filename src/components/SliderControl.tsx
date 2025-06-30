@@ -22,10 +22,10 @@ export default function SliderControl({
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
-        <label className="text-sm font-medium text-gray-700">
+        <label className="text-xs font-medium text-gray-700">
           {label}
         </label>
-        <span className="text-sm text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
+        <span className="text-xs text-gray-500 font-mono bg-gray-100 px-2 py-1 rounded">
           {value}{unit}
         </span>
       </div>
@@ -41,22 +41,22 @@ export default function SliderControl({
       <style jsx>{`
         .slider::-webkit-slider-thumb {
           appearance: none;
-          height: 20px;
-          width: 20px;
+          height: 16px;
+          width: 16px;
           border-radius: 50%;
           background: #3b82f6;
           cursor: pointer;
           border: 2px solid #ffffff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         .slider::-moz-range-thumb {
-          height: 20px;
-          width: 20px;
+          height: 16px;
+          width: 16px;
           border-radius: 50%;
           background: #3b82f6;
           cursor: pointer;
           border: 2px solid #ffffff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
       `}</style>
     </div>

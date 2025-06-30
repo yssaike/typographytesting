@@ -50,90 +50,119 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
   const containerWidth = BREAKPOINT_WIDTHS[breakpoint as keyof typeof BREAKPOINT_WIDTHS];
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-gray-900">Typography Preview</h2>
+    <div className="h-full flex flex-col">
+      <div className="flex items-center justify-between mb-4 flex-shrink-0">
+        <h2 className="text-lg font-semibold text-gray-900">Live Preview</h2>
         <div className="text-sm text-gray-500 capitalize">
-          {breakpoint} View ({containerWidth})
+          {breakpoint} ({containerWidth})
         </div>
       </div>
 
-      <div 
-        className="mx-auto bg-white border border-gray-200 rounded-lg overflow-hidden"
-        style={{ 
-          width: containerWidth,
-          maxWidth: '100%',
-          minHeight: '600px'
-        }}
-      >
-        <div className="p-8 space-y-8">
-          {/* Headline */}
-          <div>
-            <h1 style={headingStyle} className="text-gray-900 mb-4">
-              {SAMPLE_CONTENT.headline}
-            </h1>
-            <h2 style={subheadingStyle} className="text-gray-600">
-              {SAMPLE_CONTENT.subheading}
-            </h2>
-          </div>
-
-          {/* Body Content */}
-          <div className="space-y-6">
-            {SAMPLE_CONTENT.body.split('\n\n').map((paragraph, index) => (
-              <p key={index} style={bodyStyle} className="text-gray-800">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-
-          {/* Pull Quote */}
-          <blockquote className="border-l-4 border-blue-500 pl-6 my-8">
-            <p style={pullQuoteStyle} className="text-gray-700">
-              "{SAMPLE_CONTENT.pullQuote}"
-            </p>
-          </blockquote>
-
-          {/* UI Elements */}
-          <div className="space-y-6 pt-8 border-t border-gray-200">
-            <h3 style={subheadingStyle} className="text-gray-900">
-              Interactive Elements
-            </h3>
-            
-            <div className="space-y-4">
-              <button 
-                className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-                style={{ fontFamily: settings.bodyFont, fontSize: `${settings.bodySize}px` }}
-              >
-                Primary Button
-              </button>
-              
-              <div className="space-y-2">
-                <label style={captionStyle} className="block font-medium">
-                  Email Address
-                </label>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  style={bodyStyle}
-                />
-              </div>
-              
-              <a 
-                href="#" 
-                className="text-blue-500 hover:text-blue-600 underline"
-                style={bodyStyle}
-              >
-                This is a sample link
-              </a>
+      <div className="flex-1 overflow-y-auto">
+        <div 
+          className="mx-auto bg-white border border-gray-200 rounded-lg shadow-sm"
+          style={{ 
+            width: containerWidth,
+            maxWidth: '100%',
+            minHeight: '100%'
+          }}
+        >
+          <div className="p-8 space-y-8">
+            {/* Title Frame - Always Visible */}
+            <div className="border-b border-gray-100 pb-6">
+              <h1 style={headingStyle} className="text-gray-900 mb-3">
+                {SAMPLE_CONTENT.headline}
+              </h1>
+              <h2 style={subheadingStyle} className="text-gray-600">
+                {SAMPLE_CONTENT.subheading}
+              </h2>
             </div>
-          </div>
 
-          {/* Caption */}
-          <div className="pt-4 border-t border-gray-100">
-            <p style={captionStyle}>
-              {SAMPLE_CONTENT.caption}
-            </p>
+            {/* Body Content */}
+            <div className="space-y-6">
+              {SAMPLE_CONTENT.body.split('\n\n').slice(0, 2).map((paragraph, index) => (
+                <p key={index} style={bodyStyle} className="text-gray-800">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Pull Quote */}
+            <blockquote className="border-l-4 border-blue-500 pl-6 my-6">
+              <p style={pullQuoteStyle} className="text-gray-700">
+                "{SAMPLE_CONTENT.pullQuote}"
+              </p>
+            </blockquote>
+
+            {/* More Body Content */}
+            <div className="space-y-6">
+              {SAMPLE_CONTENT.body.split('\n\n').slice(2).map((paragraph, index) => (
+                <p key={index + 2} style={bodyStyle} className="text-gray-800">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* UI Elements */}
+            <div className="space-y-6 pt-6 border-t border-gray-100">
+              <h3 style={subheadingStyle} className="text-gray-900">
+                Interactive Elements
+              </h3>
+              
+              <div className="space-y-4">
+                <button 
+                  className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                  style={{ fontFamily: settings.bodyFont, fontSize: `${settings.bodySize}px` }}
+                >
+                  Primary Button
+                </button>
+                
+                <div className="space-y-2">
+                  <label style={captionStyle} className="block font-medium">
+                    Email Address
+                  </label>
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    style={bodyStyle}
+                  />
+                </div>
+                
+                <a 
+                  href="#" 
+                  className="text-blue-500 hover:text-blue-600 underline inline-block"
+                  style={bodyStyle}
+                >
+                  This is a sample link
+                </a>
+              </div>
+            </div>
+
+            {/* Lists */}
+            <div className="space-y-4">
+              <h4 style={subheadingStyle} className="text-gray-900">
+                Typography Hierarchy
+              </h4>
+              <ul className="space-y-2 list-disc list-inside">
+                <li style={bodyStyle} className="text-gray-800">
+                  Primary heading for main titles
+                </li>
+                <li style={bodyStyle} className="text-gray-800">
+                  Body text for readable content
+                </li>
+                <li style={bodyStyle} className="text-gray-800">
+                  Consistent spacing and alignment
+                </li>
+              </ul>
+            </div>
+
+            {/* Caption */}
+            <div className="pt-6 border-t border-gray-100">
+              <p style={captionStyle}>
+                {SAMPLE_CONTENT.caption}
+              </p>
+            </div>
           </div>
         </div>
       </div>

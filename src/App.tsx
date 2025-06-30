@@ -33,31 +33,31 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen bg-gray-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <header className="bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
+        <div className="px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-500 rounded-lg">
-              <Type className="h-6 w-6 text-white" />
+              <Type className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-xl font-bold text-gray-900">
                 Typography Testing Tool
               </h1>
-              <p className="text-gray-600">
-                Test and preview font combinations with real-time adjustments
+              <p className="text-sm text-gray-600">
+                Real-time font preview and adjustment
               </p>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-          {/* Controls */}
-          <div className="xl:col-span-1">
+      {/* Split Screen Layout */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Panel - Controls (40% width) */}
+        <div className="w-2/5 bg-gray-50 border-r border-gray-200 overflow-y-auto">
+          <div className="p-6">
             <ControlPanel
               settings={settings}
               breakpoint={breakpoint}
@@ -65,9 +65,11 @@ function App() {
               onBreakpointChange={setBreakpoint}
             />
           </div>
+        </div>
 
-          {/* Preview */}
-          <div className="xl:col-span-2">
+        {/* Right Panel - Preview (60% width) */}
+        <div className="w-3/5 bg-white overflow-y-auto">
+          <div className="p-6 h-full">
             <TypographyPreview
               settings={settings}
               breakpoint={breakpoint}

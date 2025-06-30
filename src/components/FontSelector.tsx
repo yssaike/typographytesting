@@ -16,14 +16,14 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
 
   return (
     <div className="space-y-2">
-      <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-        <Type className="h-4 w-4" />
+      <label className="flex items-center gap-2 text-xs font-medium text-gray-700">
+        <Type className="h-3 w-3" />
         {label}
       </label>
       <select
         value={value}
         onChange={(e) => handleFontChange(e.target.value)}
-        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
         style={{ fontFamily: value }}
       >
         {FONT_FAMILIES.map((font) => (

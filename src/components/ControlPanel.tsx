@@ -6,6 +6,7 @@ import FontSelector from './FontSelector';
 import SliderControl from './SliderControl';
 import ResponsiveControls from './ResponsiveControls';
 import FontPairingGenerator from './FontPairingGenerator';
+import FontBrowser from './FontBrowser';
 
 interface ControlPanelProps {
   settings: TypographySettings;
@@ -21,6 +22,7 @@ export default function ControlPanel({
   onBreakpointChange
 }: ControlPanelProps) {
   const [copied, setCopied] = React.useState(false);
+  const [showFontBrowser, setShowFontBrowser] = React.useState(false);
 
   const handleApplyPairing = (pairing: FontPairing) => {
     onSettingsChange({
@@ -72,6 +74,28 @@ export default function ControlPanel({
 
   return (
     <div className="space-y-6">
+      {/* Font Browser Toggle */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <button
+          onClick={() => setShowFontBrowser(!showFontBrowser)}
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm font-medium"
+        >
+          <Settings className="h-4 w-4" />
+          {showFontBrowser ? 'Hide Font Browser' : 'Browse All Google Fonts'}
+        </button>
+      </div>
+
+      {/* Font Browser */}
+      {showFontBrowser && (
+        <FontBrowser
+          onFontSelect={(font) => {
+            onSettingsChange({ headingFont: font });
+            setShowFontBrowser(false);
+          }}
+          selectedFont={settings.headingFont}
+        />
+      )}
+
       {/* Font Pairing Generator */}
       <FontPairingGenerator
         onApplyPairing={handleApplyPairing}

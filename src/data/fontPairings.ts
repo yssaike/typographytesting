@@ -158,11 +158,76 @@ export const CURATED_FONT_PAIRINGS: FontPairing[] = [
   }
 ];
 
+// Add more comprehensive pairings using the new Google Fonts
+export const EXTENDED_FONT_PAIRINGS: FontPairing[] = [
+  ...CURATED_FONT_PAIRINGS,
+  {
+    id: 'space-grotesk-modern',
+    name: 'Space Age Modern',
+    headingFont: 'Space Grotesk',
+    bodyFont: 'IBM Plex Sans',
+    headingCategory: 'sans-serif',
+    bodyCategory: 'sans-serif',
+    description: 'Futuristic headlines with professional body text',
+    reasoning: 'Space Grotesk\'s unique character creates a modern, tech-forward impression while IBM Plex Sans provides excellent readability and professional credibility.',
+    mood: 'Futuristic, Professional, Innovative',
+    useCase: ['Tech Startups', 'Innovation Labs', 'Future-focused Brands', 'Design Studios']
+  },
+  {
+    id: 'alegreya-editorial',
+    name: 'Literary Excellence',
+    headingFont: 'Alegreya',
+    bodyFont: 'Alegreya Sans',
+    headingCategory: 'serif',
+    bodyCategory: 'sans-serif',
+    description: 'Calligraphic serif with its humanist sans companion',
+    reasoning: 'Alegreya and Alegreya Sans were designed as a harmonious pair, sharing DNA while offering serif/sans contrast perfect for literary and academic content.',
+    mood: 'Literary, Scholarly, Sophisticated',
+    useCase: ['Publishing', 'Academic Journals', 'Literary Magazines', 'Educational Content']
+  },
+  {
+    id: 'barlow-condensed',
+    name: 'Condensed Impact',
+    headingFont: 'Archivo Black',
+    bodyFont: 'Barlow',
+    headingCategory: 'sans-serif',
+    bodyCategory: 'sans-serif',
+    description: 'Ultra-bold headlines with versatile body text',
+    reasoning: 'Archivo Black creates maximum impact for headlines while Barlow\'s extensive weight range provides flexibility for body text and hierarchy.',
+    mood: 'Bold, Impactful, Modern',
+    useCase: ['Sports Brands', 'Event Promotion', 'Bold Marketing', 'Youth Brands']
+  },
+  {
+    id: 'bitter-slab',
+    name: 'Slab Serif Authority',
+    headingFont: 'Bitter',
+    bodyFont: 'Source Sans Pro',
+    headingCategory: 'serif',
+    bodyCategory: 'sans-serif',
+    description: 'Strong slab serif headlines with clean body text',
+    reasoning: 'Bitter\'s slab serif design provides authority and presence for headlines, while Source Sans Pro ensures excellent readability for body content.',
+    mood: 'Authoritative, Trustworthy, Professional',
+    useCase: ['News Sites', 'Professional Services', 'Corporate Communications', 'Reports']
+  },
+  {
+    id: 'jetbrains-mono-tech',
+    name: 'Developer Focused',
+    headingFont: 'Space Grotesk',
+    bodyFont: 'JetBrains Mono',
+    headingCategory: 'sans-serif',
+    bodyCategory: 'monospace',
+    description: 'Modern headlines with developer-friendly monospace',
+    reasoning: 'Space Grotesk provides modern appeal while JetBrains Mono offers excellent code readability and developer-focused design.',
+    mood: 'Technical, Modern, Developer-friendly',
+    useCase: ['Developer Tools', 'Code Documentation', 'Tech Blogs', 'Programming Resources']
+  }
+];
+
 export const getRandomFontPairing = (): FontPairing => {
-  const randomIndex = Math.floor(Math.random() * CURATED_FONT_PAIRINGS.length);
-  return CURATED_FONT_PAIRINGS[randomIndex];
+  const randomIndex = Math.floor(Math.random() * EXTENDED_FONT_PAIRINGS.length);
+  return EXTENDED_FONT_PAIRINGS[randomIndex];
 };
 
 export const getFontPairingById = (id: string): FontPairing | undefined => {
-  return CURATED_FONT_PAIRINGS.find(pairing => pairing.id === id);
+  return EXTENDED_FONT_PAIRINGS.find(pairing => pairing.id === id);
 };

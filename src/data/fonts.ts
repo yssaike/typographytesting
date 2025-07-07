@@ -1,79 +1,38 @@
+import { COMPREHENSIVE_GOOGLE_FONTS } from './googleFonts';
+
+// Extract font families from comprehensive list
 export const FONT_FAMILIES = [
-  // Serif Fonts
+  // System fonts
   'Georgia',
   'Times New Roman',
   'serif',
-  'Playfair Display',
-  'Merriweather',
-  'Lora',
-  'Crimson Text',
-  'Source Serif Pro',
-  'PT Serif',
-  'Libre Baskerville',
-  
-  // Sans-serif Fonts
   'Arial',
   'Helvetica',
   'sans-serif',
-  'Inter',
-  'Roboto',
-  'Open Sans',
-  'Lato',
-  'Montserrat',
-  'Poppins',
-  'Source Sans Pro',
-  'Nunito Sans',
-  'Work Sans',
-  'DM Sans',
-  'Plus Jakarta Sans',
-  
-  // Monospace Fonts
   'Monaco',
   'Consolas',
   'monospace',
-  'Fira Code',
-  'Source Code Pro',
-  'JetBrains Mono',
-  
-  // Display Fonts
   'Impact',
-  'Oswald',
-  'Bebas Neue',
-  'Archivo Black'
-];
-
-export const GOOGLE_FONTS = [
-  'Inter',
-  'Roboto',
-  'Open Sans',
-  'Lato',
-  'Montserrat',
-  'Poppins',
-  'Source Sans Pro',
-  'Nunito Sans',
-  'Work Sans',
-  'DM Sans',
-  'Plus Jakarta Sans',
-  'Playfair Display',
-  'Merriweather',
-  'Lora',
-  'Crimson Text',
-  'Source Serif Pro',
-  'PT Serif',
-  'Libre Baskerville',
-  'Fira Code',
-  'Source Code Pro',
-  'JetBrains Mono',
-  'Oswald',
-  'Bebas Neue',
-  'Archivo Black'
-];
+  // Google Fonts
+  ...COMPREHENSIVE_GOOGLE_FONTS.map(font => font.family)
+].sort();
+export const GOOGLE_FONTS = COMPREHENSIVE_GOOGLE_FONTS.map(font => font.family);
 
 export const loadGoogleFont = (fontFamily: string) => {
-  if (!GOOGLE_FONTS.includes(fontFamily)) return;
+  const fontInfo = COMPREHENSIVE_GOOGLE_FONTS.find(font => font.family === fontFamily);
+  if (!fontInfo) return;
+  
+  // Get available weights for this font
+  const weights = [...new Set(fontInfo.variants.map(v => v.weight))].sort((a, b) => a - b);
+  const hasItalics = fontInfo.variants.some(v => v.style === 'italic');
+  
+  let weightString = weights.join(';');
+  if (hasItalics) {
+    weightString += ';' + weights.map(w => `${w}i`).join(';');
+  }
   
   const link = document.createElement('link');
-  link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(/\s+/g, '+')}:wght@100;200;300;400;500;600;700;800;900&display=swap`;
+  link.href = `https://fonts.googleapis.com/css2?family=${fontFamily.replace(/\s+/g, '+')}:wght@${weightString}&display=swap`;
   link.rel = 'stylesheet';
   
   // Remove existing font link if it exists

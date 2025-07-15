@@ -227,14 +227,14 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
       <div className="flex items-center gap-2 mb-6">
         <Eye className="h-5 w-5 text-purple-500" />
         <h2 className="text-lg font-semibold text-gray-900">Font Browser</h2>
       </div>
 
       {/* Controls */}
-      <div className="space-y-4 mb-6">
+      <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
         {/* Search */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -243,14 +243,14 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
             placeholder="Search fonts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
           />
         </div>
 
         {/* Filters */}
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           {/* View Mode */}
-          <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+          <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-full sm:w-auto">
             {[
               { value: 'popular', label: 'Popular' },
               { value: 'recent', label: 'Recent' },
@@ -259,7 +259,7 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
               <button
                 key={mode.value}
                 onClick={() => setViewMode(mode.value as any)}
-                className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                className={`flex-1 sm:flex-none px-2 sm:px-3 py-1.5 text-xs font-medium rounded transition-colors min-h-touch ${
                   viewMode === mode.value
                     ? 'bg-white text-gray-900 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
@@ -274,7 +274,7 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-1 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
           >
             {categories.map(category => (
               <option key={category.value} value={category.value}>
@@ -285,17 +285,17 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
         </div>
 
         {/* Preview Controls */}
-        <div className="flex gap-3 items-center">
+        <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
           <div className="flex-1">
             <input
               type="text"
               placeholder="Preview text..."
               value={previewText}
               onChange={(e) => setPreviewText(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
             />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 justify-between sm:justify-start">
             <label className="text-xs text-gray-600">Size:</label>
             <input
               type="range"
@@ -303,29 +303,29 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
               max="48"
               value={previewSize}
               onChange={(e) => setPreviewSize(parseInt(e.target.value))}
-              className="w-20"
+              className="flex-1 sm:w-20"
             />
-            <span className="text-xs text-gray-600 w-8">{previewSize}px</span>
+            <span className="text-xs text-gray-600 w-10 text-right">{previewSize}px</span>
           </div>
         </div>
       </div>
 
       {/* Results Count */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         <p className="text-sm text-gray-600">
           {filteredFonts.length} fonts found
         </p>
       </div>
 
       {/* Font Grid */}
-      <div className="grid grid-cols-1 gap-4 max-h-96 overflow-y-auto">
+      <div className="grid grid-cols-1 gap-3 sm:gap-4 max-h-80 sm:max-h-96 overflow-y-auto">
         {filteredFonts.map(font => (
           <FontCard key={font.family} font={font} />
         ))}
       </div>
 
       {filteredFonts.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-6 sm:py-8 text-gray-500">
           <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
           <p>No fonts found matching your criteria</p>
         </div>

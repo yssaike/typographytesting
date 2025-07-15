@@ -73,15 +73,17 @@ export default function ControlPanel({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Font Browser Toggle */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
         <button
           onClick={() => setShowFontBrowser(!showFontBrowser)}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm font-medium"
+          className="w-full flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm font-medium min-h-touch"
         >
-          <Settings className="h-4 w-4" />
-          {showFontBrowser ? 'Hide Font Browser' : 'Browse All Google Fonts'}
+          <Settings className="h-4 w-4 flex-shrink-0" />
+          <span className="truncate">
+            {showFontBrowser ? 'Hide Font Browser' : 'Browse All Google Fonts'}
+          </span>
         </button>
       </div>
 
@@ -103,12 +105,12 @@ export default function ControlPanel({
       />
 
       {/* Font Selection */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <div className="flex items-center gap-2 mb-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <div className="flex items-center gap-2 mb-3 sm:mb-4">
           <Settings className="h-4 w-4 text-blue-500" />
           <h3 className="text-sm font-semibold text-gray-900">Font Selection</h3>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <FontSelector
             label="Heading Font"
             value={settings.headingFont}
@@ -123,9 +125,9 @@ export default function ControlPanel({
       </div>
 
       {/* Size Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Font Sizes</h3>
-        <div className="space-y-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Font Sizes</h3>
+        <div className="space-y-3 sm:space-y-4">
           <SliderControl
             label="Heading Size"
             value={settings.headingSize}
@@ -148,9 +150,9 @@ export default function ControlPanel({
       </div>
 
       {/* Weight Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Font Weights</h3>
-        <div className="space-y-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Font Weights</h3>
+        <div className="space-y-3 sm:space-y-4">
           <SliderControl
             label="Heading Weight"
             value={settings.headingWeight}
@@ -171,9 +173,9 @@ export default function ControlPanel({
       </div>
 
       {/* Spacing Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Spacing</h3>
-        <div className="space-y-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Spacing</h3>
+        <div className="space-y-3 sm:space-y-4">
           <SliderControl
             label="Heading Line Height"
             value={settings.headingLineHeight}
@@ -212,8 +214,8 @@ export default function ControlPanel({
       </div>
 
       {/* Responsive Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Preview Size</h3>
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Preview Size</h3>
         <ResponsiveControls
           activeBreakpoint={breakpoint}
           onBreakpointChange={onBreakpointChange}
@@ -221,19 +223,19 @@ export default function ControlPanel({
       </div>
 
       {/* Export Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-4">Export</h3>
-        <div className="flex flex-col gap-2">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Export</h3>
+        <div className="flex flex-col gap-2 sm:gap-3">
           <button
             onClick={copyCSS}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm min-h-touch"
           >
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             {copied ? 'Copied!' : 'Copy CSS'}
           </button>
           <button
             onClick={downloadCSS}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-sm"
+            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-sm min-h-touch"
           >
             <Download className="h-4 w-4" />
             Download CSS

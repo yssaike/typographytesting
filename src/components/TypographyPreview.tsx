@@ -8,15 +8,21 @@ interface TypographyPreviewProps {
 }
 
 const BREAKPOINT_WIDTHS = {
+  mobile: '100%',
+  tablet: '100%',
+  desktop: '100%'
+};
+
+const BREAKPOINT_MAX_WIDTHS = {
   mobile: '375px',
   tablet: '768px',
-  desktop: '100%'
+  desktop: '1200px'
 };
 
 export default function TypographyPreview({ settings, breakpoint }: TypographyPreviewProps) {
   const headingStyle = {
     fontFamily: settings.headingFont,
-    fontSize: `${settings.headingSize}px`,
+    fontSize: `${Math.max(settings.headingSize * (breakpoint === 'mobile' ? 0.8 : breakpoint === 'tablet' ? 0.9 : 1), 24)}px`,
     fontWeight: settings.headingWeight,
     lineHeight: settings.headingLineHeight,
     letterSpacing: `${settings.headingLetterSpacing}px`,
@@ -24,7 +30,7 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
 
   const bodyStyle = {
     fontFamily: settings.bodyFont,
-    fontSize: `${settings.bodySize}px`,
+    fontSize: `${Math.max(settings.bodySize * (breakpoint === 'mobile' ? 0.9 : breakpoint === 'tablet' ? 0.95 : 1), 14)}px`,
     fontWeight: settings.bodyWeight,
     lineHeight: settings.lineHeight,
     letterSpacing: `${settings.letterSpacing}px`,
@@ -32,54 +38,55 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
 
   const subheadingStyle = {
     ...headingStyle,
-    fontSize: `${Math.round(settings.headingSize * 0.7)}px`,
+    fontSize: `${Math.max(Math.round(settings.headingSize * 0.7 * (breakpoint === 'mobile' ? 0.8 : breakpoint === 'tablet' ? 0.9 : 1)), 18)}px`,
   };
 
   const pullQuoteStyle = {
     ...bodyStyle,
-    fontSize: `${Math.round(settings.bodySize * 1.25)}px`,
+    fontSize: `${Math.max(Math.round(settings.bodySize * 1.25 * (breakpoint === 'mobile' ? 0.9 : breakpoint === 'tablet' ? 0.95 : 1)), 16)}px`,
     fontStyle: 'italic',
   };
 
   const captionStyle = {
     ...bodyStyle,
-    fontSize: `${Math.round(settings.bodySize * 0.85)}px`,
+    fontSize: `${Math.max(Math.round(settings.bodySize * 0.85 * (breakpoint === 'mobile' ? 0.9 : breakpoint === 'tablet' ? 0.95 : 1)), 12)}px`,
     color: '#6b7280',
   };
 
   const containerWidth = BREAKPOINT_WIDTHS[breakpoint as keyof typeof BREAKPOINT_WIDTHS];
+  const maxWidth = BREAKPOINT_MAX_WIDTHS[breakpoint as keyof typeof BREAKPOINT_MAX_WIDTHS];
 
   return (
     <div className="h-full flex flex-col">
-      <div className="flex items-center justify-between mb-4 flex-shrink-0">
-        <h2 className="text-lg font-semibold text-gray-900">Live Preview</h2>
-        <div className="text-sm text-gray-500 capitalize">
-          {breakpoint} ({containerWidth})
+      <div className="flex items-center justify-between mb-3 sm:mb-4 flex-shrink-0">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900">Live Preview</h2>
+        <div className="text-xs sm:text-sm text-gray-500 capitalize bg-gray-100 px-2 py-1 rounded">
+          {breakpoint} ({maxWidth})
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         <div 
-          className="mx-auto bg-white border border-gray-200 rounded-lg shadow-sm"
+          className="mx-auto bg-white border border-gray-200 rounded-lg shadow-sm transition-all duration-300"
           style={{ 
             width: containerWidth,
-            maxWidth: '100%',
+            maxWidth: maxWidth,
             minHeight: '100%'
           }}
         >
-          <div className="p-8 space-y-8">
+          <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
             {/* Title Frame - Always Visible */}
-            <div className="border-b border-gray-100 pb-6">
-              <h1 style={headingStyle} className="text-gray-900 mb-3">
+            <div className="border-b border-gray-100 pb-4 sm:pb-6">
+              <h1 style={headingStyle} className="text-gray-900 mb-2 sm:mb-3 leading-tight">
                 {SAMPLE_CONTENT.headline}
               </h1>
-              <h2 style={subheadingStyle} className="text-gray-600">
+              <h2 style={subheadingStyle} className="text-gray-600 leading-snug">
                 {SAMPLE_CONTENT.subheading}
               </h2>
             </div>
 
             {/* Body Content */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {SAMPLE_CONTENT.body.split('\n\n').slice(0, 2).map((paragraph, index) => (
                 <p key={index} style={bodyStyle} className="text-gray-800">
                   {paragraph}
@@ -88,14 +95,14 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* Pull Quote */}
-            <blockquote className="border-l-4 border-blue-500 pl-6 my-6">
+            <blockquote className="border-l-4 border-blue-500 pl-4 sm:pl-6 my-4 sm:my-6">
               <p style={pullQuoteStyle} className="text-gray-700">
                 "{SAMPLE_CONTENT.pullQuote}"
               </p>
             </blockquote>
 
             {/* More Body Content */}
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {SAMPLE_CONTENT.body.split('\n\n').slice(2).map((paragraph, index) => (
                 <p key={index + 2} style={bodyStyle} className="text-gray-800">
                   {paragraph}
@@ -104,27 +111,27 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* UI Elements */}
-            <div className="space-y-6 pt-6 border-t border-gray-100">
+            <div className="space-y-4 sm:space-y-6 pt-4 sm:pt-6 border-t border-gray-100">
               <h3 style={subheadingStyle} className="text-gray-900">
                 Interactive Elements
               </h3>
               
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <button 
-                  className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                  className="px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors min-h-touch w-full sm:w-auto"
                   style={{ fontFamily: settings.bodyFont, fontSize: `${settings.bodySize}px` }}
                 >
                   Primary Button
                 </button>
                 
-                <div className="space-y-2">
+                <div className="space-y-1 sm:space-y-2">
                   <label style={captionStyle} className="block font-medium">
                     Email Address
                   </label>
                   <input 
                     type="email" 
                     placeholder="Enter your email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-3 sm:px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
                     style={bodyStyle}
                   />
                 </div>
@@ -140,7 +147,7 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* Lists */}
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               <h4 style={subheadingStyle} className="text-gray-900">
                 Typography Hierarchy
               </h4>
@@ -158,7 +165,7 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* Caption */}
-            <div className="pt-6 border-t border-gray-100">
+            <div className="pt-4 sm:pt-6 border-t border-gray-100">
               <p style={captionStyle}>
                 {SAMPLE_CONTENT.caption}
               </p>

@@ -2,23 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font Size Accessibility Classes */
-.font-size-normal {
-  font-size: 16px;
-}
-
-.font-size-large {
-  font-size: 18px;
-}
-
-.font-size-extra-large {
-  font-size: 20px;
-}
+/* Import design system styles */
+@import './styles/designSystem.css';
+@import './styles/accessibility.css';
+@import './styles/darkTheme.css';
 
 /* Base responsive styles */
 @layer base {
   html {
-    font-size: var(--base-font-size, 16px);
+    font-size: 16px;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
   }
@@ -30,32 +22,6 @@
     -moz-osx-font-smoothing: grayscale;
     color: var(--text-primary, #000000);
     background-color: var(--bg-primary, #ffffff);
-  }
-  
-  /* Responsive font scaling */
-  @media (max-width: 640px) {
-    html {
-      font-size: var(--base-font-size-mobile, 14px);
-    }
-  }
-  
-  @media (min-width: 1920px) {
-    html {
-      font-size: var(--base-font-size-large, 18px);
-    }
-  }
-  
-  /* Apply font size classes */
-  .font-size-large html {
-    --base-font-size: 18px;
-    --base-font-size-mobile: 16px;
-    --base-font-size-large: 20px;
-  }
-  
-  .font-size-extra-large html {
-    --base-font-size: 20px;
-    --base-font-size-mobile: 18px;
-    --base-font-size-large: 22px;
   }
 }
 
@@ -69,51 +35,23 @@
     min-width: 44px;
   }
   
-  /* Responsive text utilities */
-  .text-responsive-xs {
-    font-size: clamp(0.75rem, 2vw, 0.875rem);
+  /* Skip link for accessibility */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--interactive-primary, #0056b3);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    z-index: 1000;
+    transition: top 0.3s ease;
   }
   
-  .text-responsive-sm {
-    font-size: clamp(0.875rem, 2.5vw, 1rem);
-  }
-  
-  .text-responsive-base {
-    font-size: clamp(1rem, 3vw, 1.125rem);
-  }
-  
-  .text-responsive-lg {
-    font-size: clamp(1.125rem, 3.5vw, 1.25rem);
-  }
-  
-  .text-responsive-xl {
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
-  }
-  
-  .text-responsive-2xl {
-    font-size: clamp(1.5rem, 5vw, 2rem);
-  }
-  
-  .text-responsive-3xl {
-    font-size: clamp(1.875rem, 6vw, 2.5rem);
-  }
-  
-  /* Responsive spacing utilities */
-  .space-responsive-y > * + * {
-    margin-top: clamp(0.5rem, 2vw, 1rem);
-  }
-  
-  .space-responsive-x > * + * {
-    margin-left: clamp(0.5rem, 2vw, 1rem);
-  }
-  
-  /* Container utilities */
-  .container-fluid {
-    width: 100%;
-    padding-left: clamp(1rem, 4vw, 2rem);
-    padding-right: clamp(1rem, 4vw, 2rem);
-    margin-left: auto;
-    margin-right: auto;
+  .skip-link:focus {
+    top: 6px;
   }
   
   /* Focus styles for accessibility */
@@ -126,17 +64,9 @@
     outline: none;
     box-shadow: none;
   }
-  
-  /* Safe area padding for mobile devices */
-  .safe-area-inset {
-    padding-left: env(safe-area-inset-left);
-    padding-right: env(safe-area-inset-right);
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
 }
 
-/* Line clamp utility for font descriptions */
+/* Line clamp utility */
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -151,14 +81,7 @@
   -webkit-line-clamp: 2;
 }
 
-.line-clamp-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-/* Smooth scrolling for dropdown */
+/* Smooth scrolling */
 .overflow-y-auto {
   scrollbar-width: thin;
   scrollbar-color: #cbd5e0 #f7fafc;
@@ -179,97 +102,8 @@
   border: 2px solid #f7fafc;
 }
 
-/* Mobile-specific scrollbar styles */
-@media (max-width: 768px) {
-  .overflow-y-auto::-webkit-scrollbar {
-    width: 4px;
-  }
-  
-  .overflow-y-auto::-webkit-scrollbar-thumb {
-    border: none;
-  }
-}
-
-/* Print styles */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  
-  body {
-    font-size: 12pt;
-    line-height: 1.4;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    page-break-after: avoid;
-  }
-  
-  p, blockquote {
-    page-break-inside: avoid;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .bg-gray-50 {
-    background-color: var(--bg-primary, #ffffff);
-  }
-  
-  .bg-gray-100 {
-    background-color: var(--bg-secondary, #f0f0f0);
-  }
-  
-  .text-gray-600 {
-    color: var(--text-primary, #000000);
-  }
-  
-  .border-gray-200 {
-    border-color: var(--border-primary, #000000);
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .auto-dark {
-    background-color: var(--bg-primary, #1f2937);
-    color: var(--text-primary, #f9fafb);
-  }
-  
-  .auto-dark .bg-white {
-    background-color: var(--bg-secondary, #374151);
-  }
-  
-  .auto-dark .bg-gray-50 {
-    background-color: var(--bg-primary, #1f2937);
-  }
-  
-  .auto-dark .text-gray-900 {
-    color: var(--text-primary, #f9fafb);
-  }
-  
-  .auto-dark .text-gray-600 {
-    color: var(--text-secondary, #d1d5db);
-  }
-  
-  .auto-dark .border-gray-200 {
-    border-color: var(--border-primary, #4b5563);
-  }
-}
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background-color: var(--border-secondary, #a0aec0);
+  background-color: #a0aec0;
 }
 
 /* Enhanced Focus Indicators */
@@ -279,7 +113,6 @@
   border-radius: 4px;
 }
 
-/* Remove default focus for mouse users */
 *:focus:not(:focus-visible) {
   outline: none;
 }
@@ -308,5 +141,29 @@ a[role="button"],
   [role="button"] {
     min-height: 48px;
     min-width: 48px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

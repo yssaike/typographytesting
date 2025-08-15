@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, ButtonGroup, Icon } from '@chakra-ui/react';
 import { Monitor, Tablet, Smartphone } from 'lucide-react';
 import { ResponsiveBreakpoint } from '../types/typography';
 
@@ -25,34 +26,26 @@ export default function ResponsiveControls({
   designMode,
   onBreakpointChange
 }: ResponsiveControlsProps) {
+  const buttonVariant = designMode === 'glass' ? 'glass' : designMode === 'neuro' ? 'neuro' : 'outline';
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+    <ButtonGroup isAttached w="full" variant={buttonVariant}>
       {BREAKPOINTS.map((breakpoint) => {
-        const Icon = BREAKPOINT_ICONS[breakpoint.name as keyof typeof BREAKPOINT_ICONS];
+        const IconComponent = BREAKPOINT_ICONS[breakpoint.name as keyof typeof BREAKPOINT_ICONS];
         return (
-          <button
+          <Button
             key={breakpoint.name}
             onClick={() => onBreakpointChange(breakpoint.name)}
-            className={`flex items-center gap-2 sm:gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full min-h-touch ${
-              activeBreakpoint === breakpoint.name
-                ? designMode === 'glass' 
-                  ? 'glass-button bg-blue-500/80 text-white' 
-                  : designMode === 'neuro'
-                  ? 'neuro-button-primary text-white'
-                  : 'hybrid-button bg-blue-500/80 text-white'
-                : designMode === 'glass' 
-                  ? 'glass-button text-white/80 hover:text-white' 
-                  : designMode === 'neuro'
-                  ? 'neuro-button text-gray-700 hover:text-gray-900'
-                  : 'hybrid-button text-white/80 hover:text-white'
-            }`}
+            colorScheme={activeBreakpoint === breakpoint.name ? 'brand' : 'gray'}
+            variant={activeBreakpoint === breakpoint.name ? 'solid' : buttonVariant}
+            flex={1}
+            leftIcon={<Icon as={IconComponent} />}
+            size="sm"
           >
-            <Icon className="h-4 w-4 flex-shrink-0" />
-            <span className="flex-1 text-left">{breakpoint.label}</span>
-            <span className="text-xs opacity-75 hidden sm:inline typography-code">{breakpoint.width}px</span>
-          </button>
+            {breakpoint.label}
+          </Button>
         );
       })}
-    </div>
+    </ButtonGroup>
   );
 }

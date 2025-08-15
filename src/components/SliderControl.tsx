@@ -1,5 +1,15 @@
 import React from 'react';
-import { useAccessibility } from './AccessibilityProvider';
+import {
+  Box,
+  FormLabel,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  Text,
+  Flex,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 interface SliderControlProps {
   label: string;
@@ -22,120 +32,47 @@ export default function SliderControl({
   unit = '',
   onChange
 }: SliderControlProps) {
-  const { announceToScreenReader } = useAccessibility();
-  const sliderId = `slider-${label.toLowerCase().replace(/\s+/g, '-')}`;
-  const labelId = `${sliderId}-label`;
-  const valueId = `${sliderId}-value`;
-
-  const handleChange = (newValue: number) => {
-    onChange(newValue);
-    // Announce value changes for screen readers
-    announceToScreenReader(`${label}: ${newValue}${unit}`, 'polite');
-  };
+  const thumbBg = useColorModeValue('brand.500', 'brand.300');
+  const trackBg = useColorModeValue('gray.200', 'gray.600');
+  const filledTrackBg = useColorModeValue('brand.500', 'brand.300');
 
   return (
-    <div className="space-y-2 sm:space-y-3" role="group" aria-labelledby={labelId}>
-      <div className="flex justify-between items-center gap-2">
-        <label 
-          id={labelId}
-          htmlFor={sliderId}
-          className={`text-xs font-medium typography-caption ${
-          designMode === 'glass' || designMode === 'hybrid' ? 'text-white/90' : 'text-gray-700'
-        }`}>
+    <Box w="full">
+      <Flex justify="space-between" align="center" mb={2}>
+        <FormLabel fontSize="sm" mb={0} color={useColorModeValue('gray.700', 'gray.300')}>
           {label}
-        </label>
-        <span 
-          id={valueId}
-          className={`text-xs font-mono px-2 py-1 rounded flex-shrink-0 typography-code ${
-          designMode === 'glass' 
-            ? 'glass-card text-white' 
-            : designMode === 'neuro'
-            ? 'neuro-card text-gray-600'
-            : 'hybrid-card text-white'
-          }`}
-          aria-live="polite"
-          aria-atomic="true"
+        </FormLabel>
+        <Text
+          fontSize="sm"
+          fontFamily="mono"
+          px={2}
+          py={1}
+          rounded="md"
+          bg={useColorModeValue('gray.100', 'gray.700')}
+          color={useColorModeValue('gray.700', 'gray.300')}
         >
           {value}{unit}
-        </span>
-      </div>
-      <input
-        id={sliderId}
-        type="range"
-        role="slider"
-        aria-labelledby={labelId}
-        aria-describedby={valueId}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        aria-valuenow={value}
-        aria-valuetext={`${value}${unit}`}
-        className={`w-full h-3 sm:h-2 rounded-lg appearance-none cursor-pointer touch-manipulation ${
-          designMode === 'neuro' ? 'neuro-slider' : 'slider'
-        }`}
+        </Text>
+      </Flex>
+      <Slider
+        value={value}
         min={min}
         max={max}
         step={step}
-        value={value}
-        onChange={(e) => handleChange(parseFloat(e.target.value))}
-      />
-      <style jsx>{`${
-        designMode !== 'neuro' ? `
-        .slider::-webkit-slider-thumb {
-          appearance: none;
-          height: 20px;
-          width: 20px;
-          border-radius: 50%;
-          background: ${designMode === 'glass' ? 'rgba(59, 130, 246, 0.8)' : '#3b82f6'};
-          cursor: pointer;
-          border: 2px solid #ffffff;
-          box-shadow: ${designMode === 'glass' 
-            ? '0 4px 8px rgba(59, 130, 246, 0.3)' 
-            : '0 1px 3px rgba(0, 0, 0, 0.1)'};
-          touch-action: manipulation;
-          backdrop-filter: ${designMode === 'glass' ? 'blur(4px)' : 'none'};
-        }
-        .slider::-webkit-slider-thumb:focus {
-          outline: 3px solid var(--focus-ring-color);
-          outline-offset: 2px;
-        }
-        .slider::-moz-range-thumb {
-          height: 20px;
-          width: 20px;
-          border-radius: 50%;
-          background: ${designMode === 'glass' ? 'rgba(59, 130, 246, 0.8)' : '#3b82f6'};
-          cursor: pointer;
-          border: 2px solid #ffffff;
-          box-shadow: ${designMode === 'glass' 
-            ? '0 4px 8px rgba(59, 130, 246, 0.3)' 
-            : '0 1px 3px rgba(0, 0, 0, 0.1)'};
-          touch-action: manipulation;
-        }
-        .slider::-moz-range-thumb:focus {
-          outline: 3px solid var(--focus-ring-color);
-          outline-offset: 2px;
-        }
-        .slider {
-          background: ${designMode === 'glass' 
-            ? 'rgba(255, 255, 255, 0.2)' 
-            : '#e5e7eb'};
-        }
-        .slider:focus {
-          outline: 3px solid var(--focus-ring-color);
-          outline-offset: 2px;
-        }
-        ` : ''}
-        
-        @media (max-width: 768px) {
-          .slider::-webkit-slider-thumb {
-            height: 24px;
-            width: 24px;
-          }
-          .slider::-moz-range-thumb {
-            height: 24px;
-            width: 24px;
-          }
-        }
-      `}</style>
-    </div>
+        onChange={onChange}
+        focusThumbOnChange={false}
+      >
+        <SliderTrack bg={trackBg} h={2}>
+          <SliderFilledTrack bg={filledTrackBg} />
+        </SliderTrack>
+        <SliderThumb
+          bg={thumbBg}
+          boxSize={5}
+          _focus={{
+            boxShadow: `0 0 0 3px ${useColorModeValue('rgba(59, 130, 246, 0.3)', 'rgba(147, 197, 253, 0.3)')}`,
+          }}
+        />
+      </Slider>
+    </Box>
   );
 }

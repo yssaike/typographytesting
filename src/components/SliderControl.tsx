@@ -10,7 +10,6 @@ import {
   FormLabel,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FormLabel } from '@chakra-ui/form-control';
 
 interface SliderControlProps {
   label: string;

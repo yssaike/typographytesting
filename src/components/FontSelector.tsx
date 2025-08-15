@@ -3,7 +3,6 @@ import {
   Box,
   Select,
   Text,
-  FormLabel,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { FONT_FAMILIES, loadGoogleFont } from '../data/fonts';
@@ -40,9 +39,9 @@ export default function FontSelector({ label, value, designMode, onChange }: Fon
 
   return (
     <Box w="full">
-      <FormLabel fontSize="sm" mb={2} color={useColorModeValue('gray.700', 'gray.300')}>
+      <Text fontSize="sm" fontWeight="medium" mb={2} color={useColorModeValue('gray.700', 'gray.300')}>
         {label}
-      </FormLabel>
+      </Text>
       <Select
         value={value}
         onChange={(e) => handleFontSelect(e.target.value)}

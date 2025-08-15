@@ -7,7 +7,6 @@ import {
   SliderThumb,
   Text,
   Flex,
-  FormLabel,
   useColorModeValue,
 } from '@chakra-ui/react';
 
@@ -39,9 +38,9 @@ export default function SliderControl({
   return (
     <Box w="full">
       <Flex justify="space-between" align="center" mb={2}>
-        <FormLabel fontSize="sm" mb={0} color={useColorModeValue('gray.700', 'gray.300')}>
+        <Text fontSize="sm" fontWeight="medium" color={useColorModeValue('gray.700', 'gray.300')}>
           {label}
-        </FormLabel>
+        </Text>
         <Text
           fontSize="sm"
           fontFamily="mono"

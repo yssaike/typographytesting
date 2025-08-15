@@ -6,6 +6,7 @@ interface TypographyPreviewProps {
   settings: TypographySettings;
   breakpoint: string;
   designMode: 'glass' | 'neuro' | 'hybrid';
+  darkMode: boolean;
 }
 
 const BREAKPOINT_WIDTHS = {
@@ -20,7 +21,7 @@ const BREAKPOINT_MAX_WIDTHS = {
   desktop: '1200px'
 };
 
-export default function TypographyPreview({ settings, breakpoint, designMode }: TypographyPreviewProps) {
+export default function TypographyPreview({ settings, breakpoint, designMode, darkMode }: TypographyPreviewProps) {
   const headingStyle = {
     fontFamily: settings.headingFont,
     fontSize: `${Math.max(settings.headingSize * (breakpoint === 'mobile' ? 0.8 : breakpoint === 'tablet' ? 0.9 : 1), 24)}px`,

@@ -1,0 +1,462 @@
+/* ===== COMPREHENSIVE DARK THEME WITH INTERACTIVE HOVER EFFECTS ===== */
+
+/* ===== CSS CUSTOM PROPERTIES (VARIABLES) FOR EASY THEME MANAGEMENT ===== */
+:root {
+  /* Base Dark Theme Colors */
+  --dark-bg-primary: #0f0f0f;           /* Ultra dark background */
+  --dark-bg-secondary: #1a1a1a;         /* Primary dark background */
+  --dark-bg-tertiary: #2d2d2d;          /* Secondary dark background */
+  --dark-bg-quaternary: #404040;        /* Elevated surfaces */
+  --dark-bg-elevated: #525252;          /* Highest elevation */
+  
+  /* Text Colors for Dark Theme */
+  --dark-text-primary: #ffffff;         /* Pure white - highest contrast */
+  --dark-text-secondary: #e5e5e5;       /* Light gray - secondary text */
+  --dark-text-tertiary: #cccccc;        /* Medium light gray - tertiary text */
+  --dark-text-muted: #a3a3a3;           /* Muted text - subtle content */
+  --dark-text-disabled: #737373;        /* Disabled text */
+  
+  /* Interactive Element Colors */
+  --dark-accent-primary: #3b82f6;       /* Blue accent - primary actions */
+  --dark-accent-secondary: #8b5cf6;     /* Purple accent - secondary actions */
+  --dark-accent-success: #10b981;       /* Green - success states */
+  --dark-accent-warning: #f59e0b;       /* Amber - warning states */
+  --dark-accent-error: #ef4444;         /* Red - error states */
+  --dark-accent-info: #06b6d4;          /* Cyan - info states */
+  
+  /* Hover State Colors */
+  --dark-hover-bg-primary: #262626;     /* Primary hover background */
+  --dark-hover-bg-secondary: #373737;   /* Secondary hover background */
+  --dark-hover-bg-tertiary: #4a4a4a;    /* Tertiary hover background */
+  --dark-hover-accent-primary: #2563eb; /* Primary accent hover */
+  --dark-hover-accent-secondary: #7c3aed; /* Secondary accent hover */
+  
+  /* Border Colors */
+  --dark-border-primary: #404040;       /* Primary borders */
+  --dark-border-secondary: #525252;     /* Secondary borders */
+  --dark-border-accent: #3b82f6;        /* Accent borders */
+  
+  /* Shadow Colors */
+  --dark-shadow-light: rgba(255, 255, 255, 0.1);
+  --dark-shadow-medium: rgba(0, 0, 0, 0.3);
+  --dark-shadow-heavy: rgba(0, 0, 0, 0.5);
+  
+  /* Glassmorphism Dark Theme */
+  --dark-glass-bg: rgba(26, 26, 26, 0.8);
+  --dark-glass-border: rgba(255, 255, 255, 0.1);
+  --dark-glass-shadow: rgba(0, 0, 0, 0.5);
+  
+  /* Neuromorphic Dark Theme */
+  --dark-neuro-bg: #1a1a1a;
+  --dark-neuro-shadow-dark: #0d0d0d;
+  --dark-neuro-shadow-light: #2d2d2d;
+  
+  /* Transition Properties */
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.3s ease-in-out;
+  --transition-slow: 0.5s ease-in-out;
+}
+
+/* ===== BASE DARK THEME STYLES ===== */
+
+/* Dark theme activation class */
+.dark-theme,
+[data-theme="dark"] {
+  background-color: var(--dark-bg-secondary);
+  color: var(--dark-text-primary);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Automatic dark mode based on system preference */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+  
+  body:not([data-theme="light"]) {
+    background-color: var(--dark-bg-secondary);
+    color: var(--dark-text-primary);
+  }
+}
+
+/* ===== DARK THEME COMPONENT STYLES ===== */
+
+/* Dark Theme Typography */
+.dark-theme .typography-display,
+.dark-theme .typography-heading {
+  color: var(--dark-text-primary);
+}
+
+.dark-theme .typography-subheading {
+  color: var(--dark-text-secondary);
+}
+
+.dark-theme .typography-body {
+  color: var(--dark-text-tertiary);
+}
+
+.dark-theme .typography-caption {
+  color: var(--dark-text-muted);
+}
+
+.dark-theme .typography-code {
+  color: var(--dark-accent-info);
+  background: rgba(6, 182, 212, 0.1);
+}
+
+/* ===== INTERACTIVE HOVER EFFECTS ===== */
+
+/* Navigation Links with Hover Effects */
+.dark-theme .nav-link {
+  color: var(--dark-text-secondary);
+  background-color: transparent;
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-theme .nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--dark-hover-bg-primary), transparent);
+  transition: left var(--transition-slow);
+}
+
+.dark-theme .nav-link:hover {
+  color: var(--dark-text-primary);
+  background-color: var(--dark-hover-bg-primary);
+  border-bottom-color: var(--dark-accent-primary);
+  transform: translateY(-2px);
+}
+
+.dark-theme .nav-link:hover::before {
+  left: 100%;
+}
+
+.dark-theme .nav-link.active {
+  color: var(--dark-accent-primary);
+  border-bottom-color: var(--dark-accent-primary);
+  background-color: var(--dark-hover-bg-primary);
+}
+
+/* Button Hover Effects */
+.dark-theme .btn-accessible,
+.dark-theme .glass-button,
+.dark-theme .neuro-button,
+.dark-theme .hybrid-button {
+  background-color: var(--dark-accent-primary);
+  color: var(--dark-text-primary);
+  border: 2px solid var(--dark-accent-primary);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-theme .btn-accessible::before,
+.dark-theme .glass-button::before,
+.dark-theme .neuro-button::before,
+.dark-theme .hybrid-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, var(--dark-hover-accent-primary) 0%, transparent 70%);
+  transition: all var(--transition-normal);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.dark-theme .btn-accessible:hover,
+.dark-theme .glass-button:hover,
+.dark-theme .neuro-button:hover,
+.dark-theme .hybrid-button:hover {
+  background-color: var(--dark-hover-accent-primary);
+  border-color: var(--dark-hover-accent-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px var(--dark-shadow-medium);
+}
+
+.dark-theme .btn-accessible:hover::before,
+.dark-theme .glass-button:hover::before,
+.dark-theme .neuro-button:hover::before,
+.dark-theme .hybrid-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Secondary Button Styles */
+.dark-theme .btn-secondary {
+  background-color: transparent;
+  color: var(--dark-accent-primary);
+  border: 2px solid var(--dark-accent-primary);
+}
+
+.dark-theme .btn-secondary:hover {
+  background-color: var(--dark-accent-primary);
+  color: var(--dark-text-primary);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+}
+
+/* Card Hover Effects */
+.dark-theme .glass-card,
+.dark-theme .neuro-card,
+.dark-theme .hybrid-card,
+.dark-theme .card-accessible {
+  background-color: var(--dark-bg-tertiary);
+  border: 1px solid var(--dark-border-primary);
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.dark-theme .glass-card {
+  background: var(--dark-glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--dark-glass-border);
+}
+
+.dark-theme .neuro-card {
+  background: var(--dark-neuro-bg);
+  box-shadow: 
+    9px 9px 16px var(--dark-neuro-shadow-dark),
+    -9px -9px 16px var(--dark-neuro-shadow-light);
+}
+
+.dark-theme .card-accessible:hover,
+.dark-theme .glass-card:hover,
+.dark-theme .neuro-card:hover,
+.dark-theme .hybrid-card:hover {
+  background-color: var(--dark-hover-bg-secondary);
+  border-color: var(--dark-border-secondary);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px var(--dark-shadow-medium);
+}
+
+.dark-theme .neuro-card:hover {
+  box-shadow: 
+    6px 6px 12px var(--dark-neuro-shadow-dark),
+    -6px -6px 12px var(--dark-neuro-shadow-light),
+    0 15px 35px var(--dark-shadow-medium);
+}
+
+/* Form Input Hover Effects */
+.dark-theme .form-input,
+.dark-theme .glass-input,
+.dark-theme .neuro-input {
+  background-color: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+  border: 2px solid var(--dark-border-primary);
+  transition: all var(--transition-normal);
+}
+
+.dark-theme .form-input:hover,
+.dark-theme .glass-input:hover,
+.dark-theme .neuro-input:hover {
+  background-color: var(--dark-hover-bg-secondary);
+  border-color: var(--dark-border-secondary);
+}
+
+.dark-theme .form-input:focus,
+.dark-theme .glass-input:focus,
+.dark-theme .neuro-input:focus {
+  background-color: var(--dark-bg-quaternary);
+  border-color: var(--dark-accent-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.dark-theme .form-input::placeholder,
+.dark-theme .glass-input::placeholder,
+.dark-theme .neuro-input::placeholder {
+  color: var(--dark-text-muted);
+}
+
+/* ===== SLIDER COMPONENTS DARK THEME ===== */
+
+.dark-theme .slider-accessible,
+.dark-theme .neuro-slider {
+  background: var(--dark-bg-tertiary);
+  border: 2px solid var(--dark-border-primary);
+}
+
+.dark-theme .slider-accessible::-webkit-slider-thumb,
+.dark-theme .neuro-slider::-webkit-slider-thumb {
+  background: var(--dark-accent-primary);
+  border: 3px solid var(--dark-bg-secondary);
+  transition: all var(--transition-normal);
+}
+
+.dark-theme .slider-accessible::-webkit-slider-thumb:hover,
+.dark-theme .neuro-slider::-webkit-slider-thumb:hover {
+  background: var(--dark-hover-accent-primary);
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+}
+
+/* ===== DROPDOWN AND SELECT ELEMENTS ===== */
+
+.dark-theme select,
+.dark-theme .dropdown-menu {
+  background-color: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+  border: 2px solid var(--dark-border-primary);
+  transition: all var(--transition-normal);
+}
+
+.dark-theme select:hover,
+.dark-theme .dropdown-menu:hover {
+  background-color: var(--dark-hover-bg-secondary);
+  border-color: var(--dark-border-secondary);
+}
+
+.dark-theme option {
+  background-color: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+}
+
+.dark-theme option:hover {
+  background-color: var(--dark-hover-bg-primary);
+}
+
+/* ===== STATUS INDICATORS DARK THEME ===== */
+
+.dark-theme .status-success {
+  color: var(--dark-accent-success);
+  border-color: var(--dark-accent-success);
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.dark-theme .status-warning {
+  color: var(--dark-accent-warning);
+  border-color: var(--dark-accent-warning);
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.dark-theme .status-error {
+  color: var(--dark-accent-error);
+  border-color: var(--dark-accent-error);
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.dark-theme .status-info {
+  color: var(--dark-accent-info);
+  border-color: var(--dark-accent-info);
+  background-color: rgba(6, 182, 212, 0.1);
+}
+
+/* ===== SCROLLBAR DARK THEME ===== */
+
+.dark-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.dark-theme ::-webkit-scrollbar-track {
+  background: var(--dark-bg-primary);
+  border-radius: 4px;
+}
+
+.dark-theme ::-webkit-scrollbar-thumb {
+  background: var(--dark-bg-quaternary);
+  border-radius: 4px;
+  transition: background var(--transition-normal);
+}
+
+.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-bg-elevated);
+}
+
+/* ===== FOCUS INDICATORS DARK THEME ===== */
+
+.dark-theme *:focus-visible {
+  outline: 3px solid var(--dark-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ===== RESPONSIVE HOVER EFFECTS ===== */
+
+/* Disable hover effects on touch devices to prevent sticky states */
+@media (hover: none) and (pointer: coarse) {
+  .dark-theme .nav-link:hover,
+  .dark-theme .btn-accessible:hover,
+  .dark-theme .glass-button:hover,
+  .dark-theme .neuro-button:hover,
+  .dark-theme .hybrid-button:hover,
+  .dark-theme .card-accessible:hover,
+  .dark-theme .glass-card:hover,
+  .dark-theme .neuro-card:hover,
+  .dark-theme .hybrid-card:hover {
+    transform: none;
+  }
+}
+
+/* Enhanced hover effects for devices with precise pointing */
+@media (hover: hover) and (pointer: fine) {
+  .dark-theme .interactive-element {
+    transition: all var(--transition-normal);
+  }
+  
+  .dark-theme .interactive-element:hover {
+    filter: brightness(1.1);
+  }
+}
+
+/* ===== ANIMATION KEYFRAMES ===== */
+
+@keyframes dark-theme-glow {
+  0% {
+    box-shadow: 0 0 5px var(--dark-accent-primary);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--dark-accent-primary);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--dark-accent-primary);
+  }
+}
+
+.dark-theme .glow-effect {
+  animation: dark-theme-glow 2s ease-in-out infinite;
+}
+
+/* ===== HIGH CONTRAST MODE SUPPORT ===== */
+
+@media (prefers-contrast: high) {
+  .dark-theme {
+    --dark-text-primary: #ffffff;
+    --dark-text-secondary: #ffffff;
+    --dark-bg-secondary: #000000;
+    --dark-bg-tertiary: #000000;
+    --dark-accent-primary: #00ffff;
+    --dark-border-primary: #ffffff;
+  }
+}
+
+/* ===== REDUCED MOTION SUPPORT ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .dark-theme * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ===== PRINT STYLES FOR DARK THEME ===== */
+
+@media print {
+  .dark-theme {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .dark-theme * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}

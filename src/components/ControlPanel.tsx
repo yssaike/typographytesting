@@ -13,6 +13,7 @@ interface ControlPanelProps {
   settings: TypographySettings;
   breakpoint: string;
   designMode: 'glass' | 'neuro' | 'hybrid';
+  darkMode: boolean;
   onSettingsChange: (settings: Partial<TypographySettings>) => void;
   onBreakpointChange: (breakpoint: string) => void;
 }
@@ -21,6 +22,7 @@ export default function ControlPanel({
   settings,
   breakpoint,
   designMode,
+  darkMode,
   onSettingsChange,
   onBreakpointChange
 }: ControlPanelProps) {

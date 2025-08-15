@@ -7,6 +7,7 @@ import ControlPanel from './components/ControlPanel';
 import TypographyPreview from './components/TypographyPreview';
 import './styles/designSystem.css';
 import './styles/accessibility.css';
+import './styles/darkTheme.css';
 
 const DEFAULT_SETTINGS: TypographySettings = {
   headingFont: 'Inter',
@@ -25,6 +26,7 @@ function App() {
   const [settings, setSettings] = useState<TypographySettings>(DEFAULT_SETTINGS);
   const [breakpoint, setBreakpoint] = useState('desktop');
   const [designMode, setDesignMode] = useState<'glass' | 'neuro' | 'hybrid'>('hybrid');
+  const [darkMode, setDarkMode] = useState(false);
 
   // Load initial fonts
   useEffect(() => {
@@ -36,6 +38,19 @@ function App() {
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    setDarkMode(prev => !prev);
+    document.documentElement.setAttribute('data-theme', !darkMode ? 'dark' : 'light');
+  };
+
+  // Initialize theme based on system preference
+  useEffect(() => {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setDarkMode(prefersDark);
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }, []);
+
   return (
     <AccessibilityProvider>
       {/* Skip Links */}
@@ -46,7 +61,7 @@ function App() {
         Skip to controls
       </a>
       
-    <div className={`min-h-screen flex flex-col transition-all duration-500 ${
+    <div className={`min-h-screen flex flex-col transition-all duration-500 ${darkMode ? 'dark-theme' : ''} ${
       designMode === 'glass' 
         ? 'bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500' 
         : designMode === 'neuro'
@@ -116,6 +131,22 @@ function App() {
                 <option value="neuro">Neuromorphic</option>
                 <option value="hybrid">Hybrid</option>
               </select>
+              
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={toggleDarkMode}
+                aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
+                className={`p-2 rounded-lg transition-all duration-300 ${
+                  designMode === 'glass' 
+                    ? 'glass-button hover:bg-white/20' 
+                    : designMode === 'neuro'
+                    ? 'neuro-button hover:shadow-lg'
+                    : 'hybrid-button hover:bg-white/20'
+                }`}
+              >
+                {darkMode ? '☀️' : '🌙'}
+              </button>
+              
               <div className={`text-xs capitalize px-2 py-1 rounded hidden xs:block sm:hidden ${
                 designMode === 'glass' 
                   ? 'glass-card text-white' 
@@ -158,6 +189,7 @@ function App() {
               settings={settings}
               breakpoint={breakpoint}
               designMode={designMode}
+              darkMode={darkMode}
               onSettingsChange={updateSettings}
               onBreakpointChange={setBreakpoint}
             />
@@ -181,6 +213,7 @@ function App() {
               settings={settings}
               breakpoint={breakpoint}
               designMode={designMode}
+              darkMode={darkMode}
             />
           </div>
         </section>

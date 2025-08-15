@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Box,
-  FormLabel,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -10,6 +9,7 @@ import {
   Flex,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { FormLabel } from '@chakra-ui/form-control';
 
 interface SliderControlProps {
   label: string;

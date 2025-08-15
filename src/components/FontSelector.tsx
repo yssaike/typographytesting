@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
   Box,
-  FormLabel,
   Select,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { FormLabel } from '@chakra-ui/form-control';
 import { FONT_FAMILIES, loadGoogleFont } from '../data/fonts';
 
 interface FontSelectorProps {

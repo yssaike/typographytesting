@@ -2,10 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font Size Accessibility Classes */
+.font-size-normal {
+  font-size: 16px;
+}
+
+.font-size-large {
+  font-size: 18px;
+}
+
+.font-size-extra-large {
+  font-size: 20px;
+}
+
 /* Base responsive styles */
 @layer base {
   html {
-    font-size: 16px;
+    font-size: var(--base-font-size, 16px);
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
   }
@@ -15,19 +28,34 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: var(--text-primary, #000000);
+    background-color: var(--bg-primary, #ffffff);
   }
   
   /* Responsive font scaling */
   @media (max-width: 640px) {
     html {
-      font-size: 14px;
+      font-size: var(--base-font-size-mobile, 14px);
     }
   }
   
   @media (min-width: 1920px) {
     html {
-      font-size: 18px;
+      font-size: var(--base-font-size-large, 18px);
     }
+  }
+  
+  /* Apply font size classes */
+  .font-size-large html {
+    --base-font-size: 18px;
+    --base-font-size-mobile: 16px;
+    --base-font-size-large: 20px;
+  }
+  
+  .font-size-extra-large html {
+    --base-font-size: 20px;
+    --base-font-size-mobile: 18px;
+    --base-font-size-large: 22px;
   }
 }
 
@@ -90,7 +118,13 @@
   
   /* Focus styles for accessibility */
   .focus-ring {
-    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+  }
+  
+  /* Remove focus for mouse users */
+  .focus-ring:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
   }
   
   /* Safe area padding for mobile devices */
@@ -179,19 +213,19 @@
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .bg-gray-50 {
-    background-color: #ffffff;
+    background-color: var(--bg-primary, #ffffff);
   }
   
   .bg-gray-100 {
-    background-color: #f0f0f0;
+    background-color: var(--bg-secondary, #f0f0f0);
   }
   
   .text-gray-600 {
-    color: #000000;
+    color: var(--text-primary, #000000);
   }
   
   .border-gray-200 {
-    border-color: #000000;
+    border-color: var(--border-primary, #000000);
   }
 }
 
@@ -210,30 +244,69 @@
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .auto-dark {
-    background-color: #1f2937;
-    color: #f9fafb;
+    background-color: var(--bg-primary, #1f2937);
+    color: var(--text-primary, #f9fafb);
   }
   
   .auto-dark .bg-white {
-    background-color: #374151;
+    background-color: var(--bg-secondary, #374151);
   }
   
   .auto-dark .bg-gray-50 {
-    background-color: #1f2937;
+    background-color: var(--bg-primary, #1f2937);
   }
   
   .auto-dark .text-gray-900 {
-    color: #f9fafb;
+    color: var(--text-primary, #f9fafb);
   }
   
   .auto-dark .text-gray-600 {
-    color: #d1d5db;
+    color: var(--text-secondary, #d1d5db);
   }
   
   .auto-dark .border-gray-200 {
-    border-color: #4b5563;
+    border-color: var(--border-primary, #4b5563);
   }
 }
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background-color: #a0aec0;
+  background-color: var(--border-secondary, #a0aec0);
+}
+
+/* Enhanced Focus Indicators */
+*:focus-visible {
+  outline: 3px solid var(--focus-ring-color, #0056b3);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Remove default focus for mouse users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Ensure minimum touch target size */
+button, 
+input[type="button"], 
+input[type="submit"], 
+input[type="reset"],
+input[type="range"],
+select,
+a[role="button"],
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  button, 
+  input[type="button"], 
+  input[type="submit"], 
+  input[type="reset"],
+  input[type="range"],
+  select,
+  a[role="button"],
+  [role="button"] {
+    min-height: 48px;
+    min-width: 48px;
+  }
 }

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Type } from 'lucide-react';
 import { TypographySettings } from './types/typography';
 import { loadGoogleFont } from './data/fonts';
+import { AccessibilityProvider } from './components/AccessibilityProvider';
 import ControlPanel from './components/ControlPanel';
 import TypographyPreview from './components/TypographyPreview';
 import './styles/designSystem.css';
+import './styles/accessibility.css';
 
 const DEFAULT_SETTINGS: TypographySettings = {
   headingFont: 'Inter',
@@ -35,6 +37,15 @@ function App() {
   };
 
   return (
+    <AccessibilityProvider>
+      {/* Skip Links */}
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      <a href="#controls-panel" className="skip-link">
+        Skip to controls
+      </a>
+      
     <div className={`min-h-screen flex flex-col transition-all duration-500 ${
       designMode === 'glass' 
         ? 'bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500' 
@@ -43,13 +54,17 @@ function App() {
         : 'bg-gradient-to-br from-blue-400/20 via-purple-500/20 to-pink-500/20 bg-gray-100'
     }`}>
       {/* Header */}
-      <header className={`flex-shrink-0 sticky top-0 z-40 ${
+      <header 
+        className={`flex-shrink-0 sticky top-0 z-40 ${
         designMode === 'glass' 
           ? 'glass-nav' 
           : designMode === 'neuro'
           ? 'bg-gray-200 shadow-lg'
           : 'hybrid-card border-b border-white/20'
-      }`}>
+        }`}
+        role="banner"
+        aria-label="Typography Testing Tool Header"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
@@ -60,7 +75,10 @@ function App() {
                   ? 'neuro-button-primary'
                   : 'hybrid-button'
               }`}>
-                <Type className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                <Type 
+                  className="h-4 w-4 sm:h-5 sm:w-5 text-white" 
+                  aria-hidden="true"
+                />
               </div>
               <div className="min-w-0">
                 <h1 className={`text-lg sm:text-xl font-bold truncate typography-heading ${
@@ -78,9 +96,14 @@ function App() {
             
             {/* Design Mode Toggle & Breakpoint Indicator */}
             <div className="flex items-center gap-2">
+              <label htmlFor="design-mode-select" className="sr-only">
+                Select design mode
+              </label>
               <select
+                id="design-mode-select"
                 value={designMode}
                 onChange={(e) => setDesignMode(e.target.value as any)}
+                aria-label="Design mode selection"
                 className={`text-xs px-2 py-1 rounded hidden sm:block ${
                   designMode === 'glass' 
                     ? 'glass-input' 
@@ -99,7 +122,10 @@ function App() {
                   : designMode === 'neuro'
                   ? 'neuro-card'
                   : 'hybrid-card text-white'
-              }`}>
+              }`}
+              role="status"
+              aria-label={`Current breakpoint: ${breakpoint}`}
+              >
                 {breakpoint}
               </div>
             </div>
@@ -108,15 +134,25 @@ function App() {
       </header>
 
       {/* Main Content - Responsive Layout */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <main 
+        id="main-content"
+        className="flex-1 flex flex-col lg:flex-row overflow-hidden"
+        role="main"
+        aria-label="Typography testing interface"
+      >
         {/* Controls Panel - Full width on mobile, sidebar on desktop */}
-        <div className={`w-full lg:w-2/5 xl:w-1/3 border-b lg:border-b-0 lg:border-r overflow-y-auto ${
+        <aside 
+          id="controls-panel"
+          className={`w-full lg:w-2/5 xl:w-1/3 border-b lg:border-b-0 lg:border-r overflow-y-auto ${
           designMode === 'glass' 
             ? 'bg-white/10 border-white/20' 
             : designMode === 'neuro'
             ? 'bg-gray-200 border-gray-300'
             : 'bg-white/5 border-white/20'
-        }`}>
+          }`}
+          role="complementary"
+          aria-label="Typography controls and settings"
+        >
           <div className="p-4 sm:p-6">
             <ControlPanel
               settings={settings}
@@ -126,16 +162,20 @@ function App() {
               onBreakpointChange={setBreakpoint}
             />
           </div>
-        </div>
+        </aside>
 
         {/* Preview Panel - Full width on mobile, main content on desktop */}
-        <div className={`flex-1 overflow-y-auto ${
+        <section 
+          className={`flex-1 overflow-y-auto ${
           designMode === 'glass' 
             ? 'bg-white/5' 
             : designMode === 'neuro'
             ? 'bg-gray-200'
             : 'bg-white/5'
-        }`}>
+          }`}
+          role="region"
+          aria-label="Typography preview area"
+        >
           <div className="p-4 sm:p-6 h-full">
             <TypographyPreview
               settings={settings}
@@ -143,9 +183,10 @@ function App() {
               designMode={designMode}
             />
           </div>
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
+    </AccessibilityProvider>
   );
 }
 

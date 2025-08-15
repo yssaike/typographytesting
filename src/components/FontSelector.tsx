@@ -6,6 +6,7 @@ import { COMPREHENSIVE_GOOGLE_FONTS, GoogleFontInfo } from '../data/googleFonts'
 interface FontSelectorProps {
   label: string;
   value: string;
+  designMode: 'glass' | 'neuro' | 'hybrid';
   onChange: (font: string) => void;
 }
 
@@ -26,7 +27,7 @@ const FONT_CATEGORIES = [
   { id: 'handwriting', label: 'Handwriting', icon: '✍️' }
 ];
 
-export default function FontSelector({ label, value, onChange }: FontSelectorProps) {
+export default function FontSelector({ label, value, designMode, onChange }: FontSelectorProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -204,33 +205,59 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
         }}
         className={`w-full px-4 py-3 text-left transition-all duration-200 border-l-4 ${
           isSelected 
-            ? 'bg-blue-50 border-blue-500 text-blue-900' 
+            ? designMode === 'glass' 
+              ? 'glass-card border-blue-300 text-white' 
+              : designMode === 'neuro'
+              ? 'neuro-card bg-blue-50 border-blue-500 text-blue-900'
+              : 'hybrid-card border-blue-300 text-white'
             : isHovered
-            ? 'bg-gray-50 border-gray-300'
+            ? designMode === 'glass' 
+              ? 'glass-card border-white/30'
+              : designMode === 'neuro'
+              ? 'neuro-card bg-gray-50 border-gray-300'
+              : 'hybrid-card border-white/30'
+            : designMode === 'glass' || designMode === 'hybrid'
+            ? 'border-transparent hover:glass-card hover:border-white/20'
             : 'border-transparent hover:bg-gray-50 hover:border-gray-200'
         }`}
       >
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <div 
-              className={`text-base font-medium truncate ${isSelected ? 'text-blue-900' : 'text-gray-900'}`}
+              className={`text-base font-medium truncate typography-subheading ${
+                isSelected 
+                  ? designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-blue-900'
+                  : designMode === 'glass' || designMode === 'hybrid' ? 'text-white/90' : 'text-gray-900'
+              }`}
               style={{ fontFamily: font }}
             >
               {font}
             </div>
             <div className="flex items-center gap-2 mt-1">
               {isWebSafe && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium typography-code ${
+                  designMode === 'glass' 
+                    ? 'glass-card text-green-200' 
+                    : designMode === 'neuro'
+                    ? 'neuro-card bg-green-100 text-green-800'
+                    : 'hybrid-card text-green-200'
+                }`}>
                   Web Safe
                 </span>
               )}
               {fontInfo && (
                 <>
-                  <span className="text-xs text-gray-500 capitalize">
+                  <span className={`text-xs capitalize typography-caption ${
+                    designMode === 'glass' || designMode === 'hybrid' ? 'text-white/70' : 'text-gray-500'
+                  }`}>
                     {fontInfo.category}
                   </span>
-                  <span className="text-xs text-gray-400">•</span>
-                  <span className="text-xs text-gray-500">
+                  <span className={`text-xs ${
+                    designMode === 'glass' || designMode === 'hybrid' ? 'text-white/50' : 'text-gray-400'
+                  }`}>•</span>
+                  <span className={`text-xs typography-caption ${
+                    designMode === 'glass' || designMode === 'hybrid' ? 'text-white/70' : 'text-gray-500'
+                  }`}>
                     {fontInfo.variants.length} weights
                   </span>
                   {fontInfo.popularity >= 90 && (
@@ -243,7 +270,9 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
               )}
             </div>
             {fontInfo && (
-              <div className="text-xs text-gray-500 mt-1 line-clamp-1">
+              <div className={`text-xs mt-1 line-clamp-1 typography-body ${
+                designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-500'
+              }`}>
                 {fontInfo.description}
               </div>
             )}
@@ -255,7 +284,9 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
 
   return (
     <div className="space-y-2" ref={dropdownRef}>
-      <label className="flex items-center gap-2 text-xs font-medium text-gray-700">
+      <label className={`flex items-center gap-2 text-xs font-medium typography-caption ${
+        designMode === 'glass' || designMode === 'hybrid' ? 'text-white/90' : 'text-gray-700'
+      }`}>
         <Type className="h-3 w-3" />
         {label}
       </label>
@@ -264,28 +295,56 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full px-4 py-3 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-left flex items-center justify-between hover:border-gray-400 transition-colors"
+          className={`w-full px-4 py-3 text-sm rounded-lg text-left flex items-center justify-between transition-colors ${
+            designMode === 'glass' 
+              ? 'glass-input' 
+              : designMode === 'neuro'
+              ? 'neuro-input'
+              : 'glass-input'
+          }`}
           style={{ fontFamily: previewFont || value }}
         >
-          <span className="truncate">{previewFont || value}</span>
-          <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <span className={`truncate typography-body ${
+            designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+          }`}>{previewFont || value}</span>
+          <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''} ${
+            designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-400'
+          }`} />
         </button>
 
         {/* Dropdown */}
         {isOpen && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-96 overflow-hidden">
+          <div className={`absolute top-full left-0 right-0 mt-1 rounded-lg shadow-lg z-50 max-h-96 overflow-hidden ${
+            designMode === 'glass' 
+              ? 'glass-card' 
+              : designMode === 'neuro'
+              ? 'neuro-card bg-white'
+              : 'hybrid-card bg-white/95'
+          }`}>
             {/* Search and Category Filter */}
-            <div className="p-3 border-b border-gray-200 space-y-3">
+            <div className={`p-3 space-y-3 border-b ${
+              designMode === 'glass' || designMode === 'hybrid' 
+                ? 'border-white/20' 
+                : 'border-gray-200'
+            }`}>
               {/* Search Input */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${
+                  designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-400'
+                }`} />
                 <input
                   ref={searchInputRef}
                   type="text"
                   placeholder="Search fonts..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={`w-full pl-10 pr-4 py-2 text-sm rounded-lg ${
+                    designMode === 'glass' 
+                      ? 'glass-input' 
+                      : designMode === 'neuro'
+                      ? 'neuro-input'
+                      : 'glass-input'
+                  }`}
                 />
               </div>
 
@@ -295,8 +354,14 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
                   onClick={() => setSelectedCategory('all')}
                   className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                     selectedCategory === 'all'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? designMode === 'glass' 
+                        ? 'glass-button bg-blue-500/80 text-white' 
+                        : designMode === 'neuro'
+                        ? 'neuro-button-primary text-white'
+                        : 'hybrid-button bg-blue-500/80 text-white'
+                      : designMode === 'glass' || designMode === 'hybrid'
+                        ? 'glass-button text-white/80 hover:text-white'
+                        : 'neuro-button text-gray-700 hover:text-gray-900'
                   }`}
                 >
                   All
@@ -307,8 +372,14 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
                     onClick={() => setSelectedCategory(category.id)}
                     className={`px-2 py-1 text-xs font-medium rounded transition-colors ${
                       selectedCategory === category.id
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? designMode === 'glass' 
+                          ? 'glass-button bg-blue-500/80 text-white' 
+                          : designMode === 'neuro'
+                          ? 'neuro-button-primary text-white'
+                          : 'hybrid-button bg-blue-500/80 text-white'
+                        : designMode === 'glass' || designMode === 'hybrid'
+                          ? 'glass-button text-white/80 hover:text-white'
+                          : 'neuro-button text-gray-700 hover:text-gray-900'
                     }`}
                   >
                     <span className="mr-1">{category.icon}</span>
@@ -323,13 +394,23 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
               {organizedFonts().map(section => (
                 <div key={section.category}>
                   {selectedCategory === 'all' && (
-                    <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
+                    <div className={`px-4 py-2 border-b ${
+                      designMode === 'glass' 
+                        ? 'glass-card bg-white/5 border-white/10' 
+                        : designMode === 'neuro'
+                        ? 'neuro-card bg-gray-50 border-gray-100'
+                        : 'hybrid-card bg-white/5 border-white/10'
+                    }`}>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                        <span className={`text-xs font-semibold uppercase tracking-wide typography-caption ${
+                          designMode === 'glass' || designMode === 'hybrid' ? 'text-white/90' : 'text-gray-700'
+                        }`}>
                           {FONT_CATEGORIES.find(c => c.id === section.category)?.icon}
                           {FONT_CATEGORIES.find(c => c.id === section.category)?.label || section.category}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className={`text-xs typography-caption ${
+                          designMode === 'glass' || designMode === 'hybrid' ? 'text-white/70' : 'text-gray-500'
+                        }`}>
                           ({section.fonts.length})
                         </span>
                       </div>
@@ -347,9 +428,11 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
               ))}
               
               {organizedFonts().every(section => section.fonts.length === 0) && (
-                <div className="px-4 py-8 text-center text-sm text-gray-500">
+                <div className={`px-4 py-8 text-center text-sm ${
+                  designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-500'
+                }`}>
                   <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  No fonts found matching your search
+                  <span className="typography-body">No fonts found matching your search</span>
                 </div>
               )}
             </div>
@@ -364,17 +447,29 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
         const isWebSafe = WEB_SAFE_FONTS.includes(currentFont);
         
         return (
-          <div className="text-xs text-gray-500 space-y-1 p-3 bg-gray-50 rounded-lg">
+          <div className={`text-xs space-y-1 p-3 rounded-lg ${
+            designMode === 'glass' 
+              ? 'glass-card text-white/80' 
+              : designMode === 'neuro'
+              ? 'neuro-card bg-gray-50 text-gray-500'
+              : 'hybrid-card text-white/80'
+          }`}>
             <div className="flex items-center gap-2 flex-wrap">
               {isWebSafe ? (
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium typography-code ${
+                  designMode === 'glass' 
+                    ? 'glass-card text-green-200' 
+                    : designMode === 'neuro'
+                    ? 'neuro-card bg-green-100 text-green-800'
+                    : 'hybrid-card text-green-200'
+                }`}>
                   Web Safe Font
                 </span>
               ) : fontInfo ? (
                 <>
-                  <span className="capitalize font-medium">{fontInfo.category}</span>
+                  <span className="capitalize font-medium typography-caption">{fontInfo.category}</span>
                   <span>•</span>
-                  <span>{fontInfo.variants.length} weights</span>
+                  <span className="typography-caption">{fontInfo.variants.length} weights</span>
                   {fontInfo.year && (
                     <>
                       <span>•</span>
@@ -385,7 +480,7 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
                     <>
                       <span>•</span>
                       <Star className="h-3 w-3 text-yellow-500 fill-current inline" />
-                      <span>Popular</span>
+                      <span className="typography-caption">Popular</span>
                     </>
                   )}
                 </>
@@ -393,14 +488,22 @@ export default function FontSelector({ label, value, onChange }: FontSelectorPro
             </div>
             
             {fontInfo && (
-              <div className="text-gray-400">
+              <div className={`typography-body ${
+                designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-400'
+              }`}>
                 {fontInfo.description}
               </div>
             )}
             
             {/* Live Preview */}
             <div 
-              className="text-lg text-gray-900 mt-2 p-2 bg-white rounded border"
+              className={`text-lg mt-2 p-2 rounded border typography-body ${
+                designMode === 'glass' 
+                  ? 'glass-card text-white border-white/20' 
+                  : designMode === 'neuro'
+                  ? 'neuro-card bg-white text-gray-900 border-gray-200'
+                  : 'hybrid-card bg-white/90 text-gray-900 border-white/20'
+              }`}
               style={{ fontFamily: currentFont }}
             >
               The quick brown fox jumps over the lazy dog

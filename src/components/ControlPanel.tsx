@@ -11,6 +11,7 @@ import FontBrowser from './FontBrowser';
 interface ControlPanelProps {
   settings: TypographySettings;
   breakpoint: string;
+  designMode: 'glass' | 'neuro' | 'hybrid';
   onSettingsChange: (settings: Partial<TypographySettings>) => void;
   onBreakpointChange: (breakpoint: string) => void;
 }
@@ -18,6 +19,7 @@ interface ControlPanelProps {
 export default function ControlPanel({
   settings,
   breakpoint,
+  designMode,
   onSettingsChange,
   onBreakpointChange
 }: ControlPanelProps) {
@@ -75,10 +77,22 @@ export default function ControlPanel({
   return (
     <div className="space-y-4 sm:space-y-6">
       {/* Font Browser Toggle */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
         <button
           onClick={() => setShowFontBrowser(!showFontBrowser)}
-          className="w-full flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition-colors text-sm font-medium min-h-touch"
+          className={`w-full flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 sm:py-3 text-white rounded-lg transition-colors text-sm font-medium min-h-touch ${
+            designMode === 'glass' 
+              ? 'glass-button bg-purple-500/80 hover:bg-purple-600/80' 
+              : designMode === 'neuro'
+              ? 'neuro-button-primary'
+              : 'hybrid-button bg-purple-500/80 hover:bg-purple-600/80'
+          }`}
         >
           <Settings className="h-4 w-4 flex-shrink-0" />
           <span className="truncate">
@@ -90,6 +104,7 @@ export default function ControlPanel({
       {/* Font Browser */}
       {showFontBrowser && (
         <FontBrowser
+          designMode={designMode}
           onFontSelect={(font) => {
             onSettingsChange({ headingFont: font });
             setShowFontBrowser(false);
@@ -100,37 +115,59 @@ export default function ControlPanel({
 
       {/* Font Pairing Generator */}
       <FontPairingGenerator
+        designMode={designMode}
         onApplyPairing={handleApplyPairing}
         currentSettings={settings}
       />
 
       {/* Font Selection */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
         <div className="flex items-center gap-2 mb-3 sm:mb-4">
-          <Settings className="h-4 w-4 text-blue-500" />
-          <h3 className="text-sm font-semibold text-gray-900">Font Selection</h3>
+          <Settings className={`h-4 w-4 ${
+            designMode === 'glass' || designMode === 'hybrid' ? 'text-blue-300' : 'text-blue-500'
+          }`} />
+          <h3 className={`text-sm font-semibold typography-subheading ${
+            designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+          }`}>Font Selection</h3>
         </div>
         <div className="space-y-3 sm:space-y-4">
           <FontSelector
             label="Heading Font"
             value={settings.headingFont}
+            designMode={designMode}
             onChange={(font) => onSettingsChange({ headingFont: font })}
           />
           <FontSelector
             label="Body Font"
             value={settings.bodyFont}
+            designMode={designMode}
             onChange={(font) => onSettingsChange({ bodyFont: font })}
           />
         </div>
       </div>
 
       {/* Size Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Font Sizes</h3>
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
+        <h3 className={`text-sm font-semibold mb-3 sm:mb-4 typography-subheading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Font Sizes</h3>
         <div className="space-y-3 sm:space-y-4">
           <SliderControl
             label="Heading Size"
             value={settings.headingSize}
+            designMode={designMode}
             min={10}
             max={120}
             step={1}
@@ -140,6 +177,7 @@ export default function ControlPanel({
           <SliderControl
             label="Body Size"
             value={settings.bodySize}
+            designMode={designMode}
             min={10}
             max={32}
             step={1}
@@ -150,12 +188,21 @@ export default function ControlPanel({
       </div>
 
       {/* Weight Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Font Weights</h3>
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
+        <h3 className={`text-sm font-semibold mb-3 sm:mb-4 typography-subheading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Font Weights</h3>
         <div className="space-y-3 sm:space-y-4">
           <SliderControl
             label="Heading Weight"
             value={settings.headingWeight}
+            designMode={designMode}
             min={100}
             max={900}
             step={100}
@@ -164,6 +211,7 @@ export default function ControlPanel({
           <SliderControl
             label="Body Weight"
             value={settings.bodyWeight}
+            designMode={designMode}
             min={100}
             max={900}
             step={100}
@@ -173,12 +221,21 @@ export default function ControlPanel({
       </div>
 
       {/* Spacing Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Spacing</h3>
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
+        <h3 className={`text-sm font-semibold mb-3 sm:mb-4 typography-subheading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Spacing</h3>
         <div className="space-y-3 sm:space-y-4">
           <SliderControl
             label="Heading Line Height"
             value={settings.headingLineHeight}
+            designMode={designMode}
             min={0.8}
             max={2.0}
             step={0.1}
@@ -187,6 +244,7 @@ export default function ControlPanel({
           <SliderControl
             label="Body Line Height"
             value={settings.lineHeight}
+            designMode={designMode}
             min={0.8}
             max={2.0}
             step={0.1}
@@ -195,6 +253,7 @@ export default function ControlPanel({
           <SliderControl
             label="Heading Letter Spacing"
             value={settings.headingLetterSpacing}
+            designMode={designMode}
             min={-5}
             max={5}
             step={0.1}
@@ -204,6 +263,7 @@ export default function ControlPanel({
           <SliderControl
             label="Body Letter Spacing"
             value={settings.letterSpacing}
+            designMode={designMode}
             min={-5}
             max={5}
             step={0.1}
@@ -214,28 +274,57 @@ export default function ControlPanel({
       </div>
 
       {/* Responsive Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Preview Size</h3>
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
+        <h3 className={`text-sm font-semibold mb-3 sm:mb-4 typography-subheading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Preview Size</h3>
         <ResponsiveControls
           activeBreakpoint={breakpoint}
+          designMode={designMode}
           onBreakpointChange={onBreakpointChange}
         />
       </div>
 
       {/* Export Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 sm:p-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-3 sm:mb-4">Export</h3>
+      <div className={`rounded-lg p-3 sm:p-4 ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card'
+          : 'hybrid-card'
+      }`}>
+        <h3 className={`text-sm font-semibold mb-3 sm:mb-4 typography-subheading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Export</h3>
         <div className="flex flex-col gap-2 sm:gap-3">
           <button
             onClick={copyCSS}
-            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm min-h-touch"
+            className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 text-white rounded-lg transition-colors text-sm min-h-touch ${
+              designMode === 'glass' 
+                ? 'glass-button bg-blue-500/80 hover:bg-blue-600/80' 
+                : designMode === 'neuro'
+                ? 'neuro-button-primary'
+                : 'hybrid-button bg-blue-500/80 hover:bg-blue-600/80'
+            }`}
           >
             {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             {copied ? 'Copied!' : 'Copy CSS'}
           </button>
           <button
             onClick={downloadCSS}
-            className="flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors text-sm min-h-touch"
+            className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 text-white rounded-lg transition-colors text-sm min-h-touch ${
+              designMode === 'glass' 
+                ? 'glass-button bg-green-500/80 hover:bg-green-600/80' 
+                : designMode === 'neuro'
+                ? 'neuro-button-primary bg-green-500 hover:bg-green-600'
+                : 'hybrid-button bg-green-500/80 hover:bg-green-600/80'
+            }`}
           >
             <Download className="h-4 w-4" />
             Download CSS

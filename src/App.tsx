@@ -4,6 +4,7 @@ import { TypographySettings } from './types/typography';
 import { loadGoogleFont } from './data/fonts';
 import ControlPanel from './components/ControlPanel';
 import TypographyPreview from './components/TypographyPreview';
+import './styles/designSystem.css';
 
 const DEFAULT_SETTINGS: TypographySettings = {
   headingFont: 'Inter',
@@ -21,6 +22,7 @@ const DEFAULT_SETTINGS: TypographySettings = {
 function App() {
   const [settings, setSettings] = useState<TypographySettings>(DEFAULT_SETTINGS);
   const [breakpoint, setBreakpoint] = useState('desktop');
+  const [designMode, setDesignMode] = useState<'glass' | 'neuro' | 'hybrid'>('hybrid');
 
   // Load initial fonts
   useEffect(() => {
@@ -33,28 +35,73 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className={`min-h-screen flex flex-col transition-all duration-500 ${
+      designMode === 'glass' 
+        ? 'bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500' 
+        : designMode === 'neuro'
+        ? 'bg-gray-200'
+        : 'bg-gradient-to-br from-blue-400/20 via-purple-500/20 to-pink-500/20 bg-gray-100'
+    }`}>
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 flex-shrink-0 sticky top-0 z-40">
+      <header className={`flex-shrink-0 sticky top-0 z-40 ${
+        designMode === 'glass' 
+          ? 'glass-nav' 
+          : designMode === 'neuro'
+          ? 'bg-gray-200 shadow-lg'
+          : 'hybrid-card border-b border-white/20'
+      }`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="p-1.5 sm:p-2 bg-blue-500 rounded-lg flex-shrink-0">
+              <div className={`p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${
+                designMode === 'glass' 
+                  ? 'glass-button' 
+                  : designMode === 'neuro'
+                  ? 'neuro-button-primary'
+                  : 'hybrid-button'
+              }`}>
                 <Type className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
               <div className="min-w-0">
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
+                <h1 className={`text-lg sm:text-xl font-bold truncate typography-heading ${
+                  designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+                }`}>
                   Typography Testing Tool
                 </h1>
-                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">
+                <p className={`text-xs sm:text-sm hidden sm:block typography-caption ${
+                  designMode === 'glass' || designMode === 'hybrid' ? 'text-white/80' : 'text-gray-600'
+                }`}>
                   Real-time font preview and adjustment
                 </p>
               </div>
             </div>
             
-            {/* Mobile breakpoint indicator */}
-            <div className="text-xs text-gray-500 capitalize bg-gray-100 px-2 py-1 rounded hidden xs:block sm:hidden">
-              {breakpoint}
+            {/* Design Mode Toggle & Breakpoint Indicator */}
+            <div className="flex items-center gap-2">
+              <select
+                value={designMode}
+                onChange={(e) => setDesignMode(e.target.value as any)}
+                className={`text-xs px-2 py-1 rounded hidden sm:block ${
+                  designMode === 'glass' 
+                    ? 'glass-input' 
+                    : designMode === 'neuro'
+                    ? 'neuro-input'
+                    : 'hybrid-button'
+                }`}
+              >
+                <option value="glass">Glassmorphism</option>
+                <option value="neuro">Neuromorphic</option>
+                <option value="hybrid">Hybrid</option>
+              </select>
+              <div className={`text-xs capitalize px-2 py-1 rounded hidden xs:block sm:hidden ${
+                designMode === 'glass' 
+                  ? 'glass-card text-white' 
+                  : designMode === 'neuro'
+                  ? 'neuro-card'
+                  : 'hybrid-card text-white'
+              }`}>
+                {breakpoint}
+              </div>
             </div>
           </div>
         </div>
@@ -63,11 +110,18 @@ function App() {
       {/* Main Content - Responsive Layout */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* Controls Panel - Full width on mobile, sidebar on desktop */}
-        <div className="w-full lg:w-2/5 xl:w-1/3 bg-gray-50 border-b lg:border-b-0 lg:border-r border-gray-200 overflow-y-auto">
+        <div className={`w-full lg:w-2/5 xl:w-1/3 border-b lg:border-b-0 lg:border-r overflow-y-auto ${
+          designMode === 'glass' 
+            ? 'bg-white/10 border-white/20' 
+            : designMode === 'neuro'
+            ? 'bg-gray-200 border-gray-300'
+            : 'bg-white/5 border-white/20'
+        }`}>
           <div className="p-4 sm:p-6">
             <ControlPanel
               settings={settings}
               breakpoint={breakpoint}
+              designMode={designMode}
               onSettingsChange={updateSettings}
               onBreakpointChange={setBreakpoint}
             />
@@ -75,11 +129,18 @@ function App() {
         </div>
 
         {/* Preview Panel - Full width on mobile, main content on desktop */}
-        <div className="flex-1 bg-white overflow-y-auto">
+        <div className={`flex-1 overflow-y-auto ${
+          designMode === 'glass' 
+            ? 'bg-white/5' 
+            : designMode === 'neuro'
+            ? 'bg-gray-200'
+            : 'bg-white/5'
+        }`}>
           <div className="p-4 sm:p-6 h-full">
             <TypographyPreview
               settings={settings}
               breakpoint={breakpoint}
+              designMode={designMode}
             />
           </div>
         </div>

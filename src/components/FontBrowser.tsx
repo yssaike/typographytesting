@@ -4,10 +4,11 @@ import { GoogleFontInfo, getFontsByCategory, searchFonts, getPopularFonts, getRe
 
 interface FontBrowserProps {
   onFontSelect: (fontFamily: string) => void;
+  designMode: 'glass' | 'neuro' | 'hybrid';
   selectedFont?: string;
 }
 
-export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserProps) {
+export default function FontBrowser({ onFontSelect, designMode, selectedFont }: FontBrowserProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [viewMode, setViewMode] = useState<'popular' | 'recent' | 'all'>('popular');
@@ -63,8 +64,14 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
     const isExpanded = expandedFont === font.family;
 
     return (
-      <div className={`bg-white rounded-lg border transition-all duration-200 ${
+      <div className={`rounded-lg transition-all duration-200 ${
         isSelected ? 'border-blue-500 shadow-lg' : 'border-gray-200 hover:border-gray-300 hover:shadow-md'
+      } ${
+        designMode === 'glass' 
+          ? 'glass-card' 
+          : designMode === 'neuro'
+          ? 'neuro-card bg-white'
+          : 'hybrid-card bg-white/90'
       }`}>
         <div className="p-4">
           {/* Font Preview */}
@@ -87,8 +94,12 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
           {/* Font Info */}
           <div className="flex items-center justify-between mb-2">
             <div>
-              <h3 className="font-semibold text-gray-900 text-sm">{font.family}</h3>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
+              <h3 className={`font-semibold text-sm typography-subheading ${
+                designMode === 'glass' || designMode === 'hybrid' ? 'text-gray-800' : 'text-gray-900'
+              }`}>{font.family}</h3>
+              <div className={`flex items-center gap-2 text-xs typography-caption ${
+                designMode === 'glass' || designMode === 'hybrid' ? 'text-gray-600' : 'text-gray-500'
+              }`}>
                 <span className="capitalize">{font.category}</span>
                 <span>•</span>
                 <span>{font.variants.length} styles</span>
@@ -120,8 +131,16 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
               onClick={() => handleFontSelect(font)}
               className={`flex-1 px-3 py-2 text-xs font-medium rounded transition-colors ${
                 isSelected
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? designMode === 'glass' 
+                    ? 'glass-button bg-blue-500/80 text-white' 
+                    : designMode === 'neuro'
+                    ? 'neuro-button-primary text-white'
+                    : 'hybrid-button bg-blue-500/80 text-white'
+                  : designMode === 'glass' 
+                    ? 'glass-button text-gray-700 hover:text-gray-900' 
+                    : designMode === 'neuro'
+                    ? 'neuro-button text-gray-700 hover:text-gray-900'
+                    : 'hybrid-button text-gray-700 hover:text-gray-900'
               }`}
             >
               {isSelected ? 'Selected' : 'Select Font'}
@@ -227,30 +246,54 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+    <div className={`rounded-lg p-4 sm:p-6 ${
+      designMode === 'glass' 
+        ? 'glass-card' 
+        : designMode === 'neuro'
+        ? 'neuro-card'
+        : 'hybrid-card'
+    }`}>
       <div className="flex items-center gap-2 mb-6">
-        <Eye className="h-5 w-5 text-purple-500" />
-        <h2 className="text-lg font-semibold text-gray-900">Font Browser</h2>
+        <Eye className={`h-5 w-5 ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-purple-300' : 'text-purple-500'
+        }`} />
+        <h2 className={`text-lg font-semibold typography-heading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Font Browser</h2>
       </div>
 
       {/* Controls */}
       <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
         {/* Search */}
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${
+            designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-400'
+          }`} />
           <input
             type="text"
             placeholder="Search fonts..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
+            className={`w-full pl-10 pr-4 py-2.5 rounded-lg min-h-touch ${
+              designMode === 'glass' 
+                ? 'glass-input' 
+                : designMode === 'neuro'
+                ? 'neuro-input'
+                : 'glass-input'
+            }`}
           />
         </div>
 
         {/* Filters */}
         <div className="flex flex-wrap gap-2 sm:gap-3">
           {/* View Mode */}
-          <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-full sm:w-auto">
+          <div className={`flex gap-1 rounded-lg p-1 w-full sm:w-auto ${
+            designMode === 'glass' 
+              ? 'glass-card' 
+              : designMode === 'neuro'
+              ? 'neuro-card'
+              : 'hybrid-card'
+          }`}>
             {[
               { value: 'popular', label: 'Popular' },
               { value: 'recent', label: 'Recent' },
@@ -261,8 +304,14 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
                 onClick={() => setViewMode(mode.value as any)}
                 className={`flex-1 sm:flex-none px-2 sm:px-3 py-1.5 text-xs font-medium rounded transition-colors min-h-touch ${
                   viewMode === mode.value
-                    ? 'bg-white text-gray-900 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? designMode === 'glass' 
+                      ? 'glass-button bg-white/20 text-white' 
+                      : designMode === 'neuro'
+                      ? 'neuro-button text-gray-900'
+                      : 'hybrid-button bg-white/20 text-white'
+                    : designMode === 'glass' || designMode === 'hybrid'
+                      ? 'text-white/70 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 {mode.label}
@@ -274,7 +323,13 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-2 text-xs border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
+            className={`px-3 py-2 text-xs rounded-lg min-h-touch ${
+              designMode === 'glass' 
+                ? 'glass-input' 
+                : designMode === 'neuro'
+                ? 'neuro-input'
+                : 'glass-input'
+            }`}
           >
             {categories.map(category => (
               <option key={category.value} value={category.value}>
@@ -292,27 +347,39 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
               placeholder="Preview text..."
               value={previewText}
               onChange={(e) => setPreviewText(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
+              className={`w-full px-3 py-2.5 text-sm rounded-lg min-h-touch ${
+                designMode === 'glass' 
+                  ? 'glass-input' 
+                  : designMode === 'neuro'
+                  ? 'neuro-input'
+                  : 'glass-input'
+              }`}
             />
           </div>
           <div className="flex items-center gap-2 justify-between sm:justify-start">
-            <label className="text-xs text-gray-600">Size:</label>
+            <label className={`text-xs typography-caption ${
+              designMode === 'glass' || designMode === 'hybrid' ? 'text-white/80' : 'text-gray-600'
+            }`}>Size:</label>
             <input
               type="range"
+              className={designMode === 'neuro' ? 'neuro-slider' : 'slider'}
               min="12"
               max="48"
               value={previewSize}
               onChange={(e) => setPreviewSize(parseInt(e.target.value))}
-              className="flex-1 sm:w-20"
             />
-            <span className="text-xs text-gray-600 w-10 text-right">{previewSize}px</span>
+            <span className={`text-xs w-10 text-right typography-code ${
+              designMode === 'glass' || designMode === 'hybrid' ? 'text-white/80' : 'text-gray-600'
+            }`}>{previewSize}px</span>
           </div>
         </div>
       </div>
 
       {/* Results Count */}
       <div className="flex items-center justify-between mb-3 sm:mb-4">
-        <p className="text-sm text-gray-600">
+        <p className={`text-sm typography-body ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white/80' : 'text-gray-600'
+        }`}>
           {filteredFonts.length} fonts found
         </p>
       </div>
@@ -325,9 +392,11 @@ export default function FontBrowser({ onFontSelect, selectedFont }: FontBrowserP
       </div>
 
       {filteredFonts.length === 0 && (
-        <div className="text-center py-6 sm:py-8 text-gray-500">
+        <div className={`text-center py-6 sm:py-8 ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white/60' : 'text-gray-500'
+        }`}>
           <Search className="h-8 w-8 mx-auto mb-2 opacity-50" />
-          <p>No fonts found matching your criteria</p>
+          <p className="typography-body">No fonts found matching your criteria</p>
         </div>
       )}
     </div>

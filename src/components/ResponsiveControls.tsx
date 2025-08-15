@@ -4,6 +4,7 @@ import { ResponsiveBreakpoint } from '../types/typography';
 
 interface ResponsiveControlsProps {
   activeBreakpoint: string;
+  designMode: 'glass' | 'neuro' | 'hybrid';
   onBreakpointChange: (breakpoint: string) => void;
 }
 
@@ -21,6 +22,7 @@ const BREAKPOINT_ICONS = {
 
 export default function ResponsiveControls({
   activeBreakpoint,
+  designMode,
   onBreakpointChange
 }: ResponsiveControlsProps) {
   return (
@@ -33,13 +35,21 @@ export default function ResponsiveControls({
             onClick={() => onBreakpointChange(breakpoint.name)}
             className={`flex items-center gap-2 sm:gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors w-full min-h-touch ${
               activeBreakpoint === breakpoint.name
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? designMode === 'glass' 
+                  ? 'glass-button bg-blue-500/80 text-white' 
+                  : designMode === 'neuro'
+                  ? 'neuro-button-primary text-white'
+                  : 'hybrid-button bg-blue-500/80 text-white'
+                : designMode === 'glass' 
+                  ? 'glass-button text-white/80 hover:text-white' 
+                  : designMode === 'neuro'
+                  ? 'neuro-button text-gray-700 hover:text-gray-900'
+                  : 'hybrid-button text-white/80 hover:text-white'
             }`}
           >
             <Icon className="h-4 w-4 flex-shrink-0" />
             <span className="flex-1 text-left">{breakpoint.label}</span>
-            <span className="text-xs opacity-75 hidden sm:inline">{breakpoint.width}px</span>
+            <span className="text-xs opacity-75 hidden sm:inline typography-code">{breakpoint.width}px</span>
           </button>
         );
       })}

@@ -5,6 +5,7 @@ import { SAMPLE_CONTENT } from '../data/content';
 interface TypographyPreviewProps {
   settings: TypographySettings;
   breakpoint: string;
+  designMode: 'glass' | 'neuro' | 'hybrid';
 }
 
 const BREAKPOINT_WIDTHS = {
@@ -19,7 +20,7 @@ const BREAKPOINT_MAX_WIDTHS = {
   desktop: '1200px'
 };
 
-export default function TypographyPreview({ settings, breakpoint }: TypographyPreviewProps) {
+export default function TypographyPreview({ settings, breakpoint, designMode }: TypographyPreviewProps) {
   const headingStyle = {
     fontFamily: settings.headingFont,
     fontSize: `${Math.max(settings.headingSize * (breakpoint === 'mobile' ? 0.8 : breakpoint === 'tablet' ? 0.9 : 1), 24)}px`,
@@ -59,15 +60,29 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
   return (
     <div className="h-full flex flex-col">
       <div className="flex items-center justify-between mb-3 sm:mb-4 flex-shrink-0">
-        <h2 className="text-base sm:text-lg font-semibold text-gray-900">Live Preview</h2>
-        <div className="text-xs sm:text-sm text-gray-500 capitalize bg-gray-100 px-2 py-1 rounded">
+        <h2 className={`text-base sm:text-lg font-semibold typography-heading ${
+          designMode === 'glass' || designMode === 'hybrid' ? 'text-white' : 'text-gray-900'
+        }`}>Live Preview</h2>
+        <div className={`text-xs sm:text-sm capitalize px-2 py-1 rounded typography-caption ${
+          designMode === 'glass' 
+            ? 'glass-card text-white' 
+            : designMode === 'neuro'
+            ? 'neuro-card text-gray-600'
+            : 'hybrid-card text-white'
+        }`}>
           {breakpoint} ({maxWidth})
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
         <div 
-          className="mx-auto bg-white border border-gray-200 rounded-lg shadow-sm transition-all duration-300"
+          className={`mx-auto rounded-lg transition-all duration-300 ${
+            designMode === 'glass' 
+              ? 'glass-card' 
+              : designMode === 'neuro'
+              ? 'neuro-card bg-white'
+              : 'hybrid-card bg-white/90'
+          }`}
           style={{ 
             width: containerWidth,
             maxWidth: maxWidth,
@@ -76,7 +91,11 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
         >
           <div className="p-4 sm:p-6 lg:p-8 space-y-6 sm:space-y-8">
             {/* Title Frame - Always Visible */}
-            <div className="border-b border-gray-100 pb-4 sm:pb-6">
+            <div className={`pb-4 sm:pb-6 border-b ${
+              designMode === 'glass' || designMode === 'hybrid' 
+                ? 'border-white/20' 
+                : 'border-gray-100'
+            }`}>
               <h1 style={headingStyle} className="text-gray-900 mb-2 sm:mb-3 leading-tight">
                 {SAMPLE_CONTENT.headline}
               </h1>
@@ -95,7 +114,11 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* Pull Quote */}
-            <blockquote className="border-l-4 border-blue-500 pl-4 sm:pl-6 my-4 sm:my-6">
+            <blockquote className={`border-l-4 pl-4 sm:pl-6 my-4 sm:my-6 ${
+              designMode === 'glass' || designMode === 'hybrid' 
+                ? 'border-blue-300' 
+                : 'border-blue-500'
+            }`}>
               <p style={pullQuoteStyle} className="text-gray-700">
                 "{SAMPLE_CONTENT.pullQuote}"
               </p>
@@ -111,34 +134,56 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* UI Elements */}
-            <div className="space-y-4 sm:space-y-6 pt-4 sm:pt-6 border-t border-gray-100">
+            <div className={`space-y-4 sm:space-y-6 pt-4 sm:pt-6 border-t ${
+              designMode === 'glass' || designMode === 'hybrid' 
+                ? 'border-white/20' 
+                : 'border-gray-100'
+            }`}>
               <h3 style={subheadingStyle} className="text-gray-900">
                 Interactive Elements
               </h3>
               
               <div className="space-y-3 sm:space-y-4">
                 <button 
-                  className="px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors min-h-touch w-full sm:w-auto"
+                  className={`px-4 sm:px-6 py-2.5 sm:py-3 text-white rounded-lg transition-colors min-h-touch w-full sm:w-auto ${
+                    designMode === 'glass' 
+                      ? 'glass-button bg-blue-500/80 hover:bg-blue-600/80' 
+                      : designMode === 'neuro'
+                      ? 'neuro-button-primary'
+                      : 'hybrid-button bg-blue-500/80 hover:bg-blue-600/80'
+                  }`}
                   style={{ fontFamily: settings.bodyFont, fontSize: `${settings.bodySize}px` }}
                 >
                   Primary Button
                 </button>
                 
                 <div className="space-y-1 sm:space-y-2">
-                  <label style={captionStyle} className="block font-medium">
+                  <label style={captionStyle} className={`block font-medium typography-caption ${
+                    designMode === 'glass' || designMode === 'hybrid' ? 'text-gray-600' : 'text-gray-700'
+                  }`}>
                     Email Address
                   </label>
                   <input 
                     type="email" 
                     placeholder="Enter your email"
-                    className="w-full px-3 sm:px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-h-touch"
+                    className={`w-full px-3 sm:px-4 py-2.5 rounded-lg min-h-touch ${
+                      designMode === 'glass' 
+                        ? 'glass-input' 
+                        : designMode === 'neuro'
+                        ? 'neuro-input'
+                        : 'glass-input'
+                    }`}
                     style={bodyStyle}
                   />
                 </div>
                 
                 <a 
                   href="#" 
-                  className="text-blue-500 hover:text-blue-600 underline inline-block"
+                  className={`underline inline-block transition-colors ${
+                    designMode === 'glass' || designMode === 'hybrid' 
+                      ? 'text-blue-300 hover:text-blue-200' 
+                      : 'text-blue-500 hover:text-blue-600'
+                  }`}
                   style={bodyStyle}
                 >
                   This is a sample link
@@ -165,7 +210,11 @@ export default function TypographyPreview({ settings, breakpoint }: TypographyPr
             </div>
 
             {/* Caption */}
-            <div className="pt-4 sm:pt-6 border-t border-gray-100">
+            <div className={`pt-4 sm:pt-6 border-t ${
+              designMode === 'glass' || designMode === 'hybrid' 
+                ? 'border-white/20' 
+                : 'border-gray-100'
+            }`}>
               <p style={captionStyle}>
                 {SAMPLE_CONTENT.caption}
               </p>

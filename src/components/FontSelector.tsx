@@ -5,7 +5,6 @@ import {
   Text,
   FormLabel,
   useColorModeValue,
-} from '@chakra-ui/react';
 import { FONT_FAMILIES, loadGoogleFont } from '../data/fonts';
 
 interface FontSelectorProps {

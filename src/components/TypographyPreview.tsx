@@ -1,26 +1,11 @@
 import React from 'react';
-import {
-  Box,
-  Card,
-  CardBody,
-  Heading,
-  Text,
-  Button,
-  Input,
-  Link,
-  UnorderedList,
-  ListItem,
-  Flex,
-  Badge,
-  useColorModeValue,
-} from '@chakra-ui/react';
 import { TypographySettings } from '../types/typography';
 import { SAMPLE_CONTENT } from '../data/content';
 
 interface TypographyPreviewProps {
   settings: TypographySettings;
   breakpoint: string;
-  designMode: 'glass' | 'neuro' | 'hybrid';
+  darkMode: boolean;
 }
 
 const BREAKPOINT_MAX_WIDTHS = {
@@ -29,10 +14,7 @@ const BREAKPOINT_MAX_WIDTHS = {
   desktop: '100%'
 };
 
-export default function TypographyPreview({ settings, breakpoint, designMode }: TypographyPreviewProps) {
-  const cardVariant = designMode === 'glass' ? 'glass' : designMode === 'neuro' ? 'neuro' : 'outline';
-  const buttonVariant = designMode === 'glass' ? 'glass' : designMode === 'neuro' ? 'neuro' : 'solid';
-
+export default function TypographyPreview({ settings, breakpoint, darkMode }: TypographyPreviewProps) {
   const headingStyle = {
     fontFamily: settings.headingFont,
     fontSize: `${Math.max(settings.headingSize * (breakpoint === 'mobile' ? 0.8 : breakpoint === 'tablet' ? 0.9 : 1), 24)}px`,
@@ -57,143 +39,126 @@ export default function TypographyPreview({ settings, breakpoint, designMode }: 
   const maxWidth = BREAKPOINT_MAX_WIDTHS[breakpoint as keyof typeof BREAKPOINT_MAX_WIDTHS];
 
   return (
-    <Box h="full">
-      <Flex justify="space-between" align="center" mb={4}>
-        <Heading size="lg" color={useColorModeValue('white', 'white')}>
+    <div className="h-full">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-white">
           Live Preview
-        </Heading>
-        <Badge colorScheme="blue" textTransform="capitalize">
+        </h2>
+        <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded capitalize">
           {breakpoint} ({maxWidth})
-        </Badge>
-      </Flex>
+        </span>
+      </div>
 
-      <Box
-        mx="auto"
-        maxW={maxWidth}
-        h="full"
-        overflowY="auto"
+      <div
+        className="mx-auto h-full"
+        style={{ maxWidth }}
       >
-        <Card variant={cardVariant} h="full">
-          <CardBody>
-            <Box spacing={8}>
-              {/* Title Section */}
-              <Box pb={6} borderBottom="1px solid" borderColor={useColorModeValue('gray.200', 'gray.600')} mb={6}>
-                <Heading style={headingStyle} mb={3} color={useColorModeValue('gray.900', 'gray.100')}>
-                  {SAMPLE_CONTENT.headline}
-                </Heading>
-                <Text style={subheadingStyle} color={useColorModeValue('gray.600', 'gray.400')}>
-                  {SAMPLE_CONTENT.subheading}
-                </Text>
-              </Box>
+        <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 h-full overflow-y-auto">
+          <div className="space-y-8">
+            {/* Title Section */}
+            <div className="pb-6 border-b border-white/20">
+              <h1 style={headingStyle} className="mb-3 text-gray-900 dark:text-gray-100">
+                {SAMPLE_CONTENT.headline}
+              </h1>
+              <p style={subheadingStyle} className="text-gray-600 dark:text-gray-400">
+                {SAMPLE_CONTENT.subheading}
+              </p>
+            </div>
 
-              {/* Body Content */}
-              <Box mb={6}>
-                {SAMPLE_CONTENT.body.split('\n\n').slice(0, 2).map((paragraph, index) => (
-                  <Text key={index} style={bodyStyle} mb={4} color={useColorModeValue('gray.800', 'gray.200')}>
-                    {paragraph}
-                  </Text>
-                ))}
-              </Box>
+            {/* Body Content */}
+            <div>
+              {SAMPLE_CONTENT.body.split('\n\n').slice(0, 2).map((paragraph, index) => (
+                <p key={index} style={bodyStyle} className="mb-4 text-gray-800 dark:text-gray-200">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
 
-              {/* Pull Quote */}
-              <Box
-                borderLeft="4px solid"
-                borderColor="blue.500"
-                pl={6}
-                my={6}
-                py={2}
+            {/* Pull Quote */}
+            <div className="border-l-4 border-blue-500 pl-6 my-6 py-2">
+              <p
+                style={{ ...bodyStyle, fontSize: `${Math.round(settings.bodySize * 1.25)}px`, fontStyle: 'italic' }}
+                className="text-gray-700 dark:text-gray-300"
               >
-                <Text
-                  style={{ ...bodyStyle, fontSize: `${Math.round(settings.bodySize * 1.25)}px`, fontStyle: 'italic' }}
-                  color={useColorModeValue('gray.700', 'gray.300')}
+                "{SAMPLE_CONTENT.pullQuote}"
+              </p>
+            </div>
+
+            {/* More Content */}
+            <div>
+              {SAMPLE_CONTENT.body.split('\n\n').slice(2).map((paragraph, index) => (
+                <p key={index + 2} style={bodyStyle} className="mb-4 text-gray-800 dark:text-gray-200">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Interactive Elements */}
+            <div className="pt-6 border-t border-white/20">
+              <h3 style={subheadingStyle} className="mb-4 text-gray-900 dark:text-gray-100">
+                Interactive Elements
+              </h3>
+              
+              <div className="space-y-4">
+                <button
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+                  style={{ fontFamily: settings.bodyFont, fontSize: `${settings.bodySize}px` }}
                 >
-                  "{SAMPLE_CONTENT.pullQuote}"
-                </Text>
-              </Box>
-
-              {/* More Content */}
-              <Box mb={6}>
-                {SAMPLE_CONTENT.body.split('\n\n').slice(2).map((paragraph, index) => (
-                  <Text key={index + 2} style={bodyStyle} mb={4} color={useColorModeValue('gray.800', 'gray.200')}>
-                    {paragraph}
-                  </Text>
-                ))}
-              </Box>
-
-              {/* Interactive Elements */}
-              <Box pt={6} borderTop="1px solid" borderColor={useColorModeValue('gray.200', 'gray.600')}>
-                <Text style={subheadingStyle} mb={4} color={useColorModeValue('gray.900', 'gray.100')}>
-                  Interactive Elements
-                </Text>
+                  Primary Button
+                </button>
                 
-                <Box spacing={4}>
-                  <Button
-                    variant={buttonVariant}
-                    colorScheme="blue"
-                    mb={4}
-                    style={{ fontFamily: settings.bodyFont, fontSize: `${settings.bodySize}px` }}
-                  >
-                    Primary Button
-                  </Button>
-                  
-                  <Box mb={4}>
-                    <Text
-                      fontSize="sm"
-                      fontWeight="medium"
-                      mb={2}
-                      color={useColorModeValue('gray.700', 'gray.300')}
-                    >
-                      Email Address
-                    </Text>
-                    <Input
-                      placeholder="Enter your email"
-                      style={bodyStyle}
-                      bg={useColorModeValue('white', 'gray.700')}
-                    />
-                  </Box>
-                  
-                  <Link
-                    color="blue.500"
-                    textDecoration="underline"
+                <div>
+                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
                     style={bodyStyle}
-                    _hover={{ color: 'blue.600' }}
-                  >
-                    This is a sample link
-                  </Link>
-                </Box>
-              </Box>
-
-              {/* Lists */}
-              <Box mt={6}>
-                <Text style={subheadingStyle} mb={4} color={useColorModeValue('gray.900', 'gray.100')}>
-                  Typography Hierarchy
-                </Text>
-                <UnorderedList spacing={2}>
-                  <ListItem style={bodyStyle} color={useColorModeValue('gray.800', 'gray.200')}>
-                    Primary heading for main titles
-                  </ListItem>
-                  <ListItem style={bodyStyle} color={useColorModeValue('gray.800', 'gray.200')}>
-                    Body text for readable content
-                  </ListItem>
-                  <ListItem style={bodyStyle} color={useColorModeValue('gray.800', 'gray.200')}>
-                    Consistent spacing and alignment
-                  </ListItem>
-                </UnorderedList>
-              </Box>
-
-              {/* Caption */}
-              <Box pt={6} borderTop="1px solid" borderColor={useColorModeValue('gray.200', 'gray.600')} mt={6}>
-                <Text
-                  style={{ ...bodyStyle, fontSize: `${Math.round(settings.bodySize * 0.85)}px` }}
-                  color={useColorModeValue('gray.500', 'gray.400')}
+                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                
+                <a
+                  href="#"
+                  className="text-blue-500 hover:text-blue-600 underline"
+                  style={bodyStyle}
                 >
-                  {SAMPLE_CONTENT.caption}
-                </Text>
-              </Box>
-            </Box>
-          </CardBody>
-        </Card>
-      </Box>
-    </Box>
+                  This is a sample link
+                </a>
+              </div>
+            </div>
+
+            {/* Lists */}
+            <div>
+              <h3 style={subheadingStyle} className="mb-4 text-gray-900 dark:text-gray-100">
+                Typography Hierarchy
+              </h3>
+              <ul className="space-y-2 list-disc list-inside">
+                <li style={bodyStyle} className="text-gray-800 dark:text-gray-200">
+                  Primary heading for main titles
+                </li>
+                <li style={bodyStyle} className="text-gray-800 dark:text-gray-200">
+                  Body text for readable content
+                </li>
+                <li style={bodyStyle} className="text-gray-800 dark:text-gray-200">
+                  Consistent spacing and alignment
+                </li>
+              </ul>
+            </div>
+
+            {/* Caption */}
+            <div className="pt-6 border-t border-white/20">
+              <p
+                style={{ ...bodyStyle, fontSize: `${Math.round(settings.bodySize * 0.85)}px` }}
+                className="text-gray-500 dark:text-gray-400"
+              >
+                {SAMPLE_CONTENT.caption}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

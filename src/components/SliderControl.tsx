@@ -1,19 +1,9 @@
 import React from 'react';
-import {
-  Box,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  Text,
-  Flex,
-  useColorModeValue,
-} from '@chakra-ui/react';
 
 interface SliderControlProps {
   label: string;
   value: number;
-  designMode: 'glass' | 'neuro' | 'hybrid';
+  darkMode: boolean;
   min: number;
   max: number;
   step: number;
@@ -24,54 +14,32 @@ interface SliderControlProps {
 export default function SliderControl({
   label,
   value,
-  designMode,
+  darkMode,
   min,
   max,
   step,
   unit = '',
   onChange
 }: SliderControlProps) {
-  const thumbBg = useColorModeValue('brand.500', 'brand.300');
-  const trackBg = useColorModeValue('gray.200', 'gray.600');
-  const filledTrackBg = useColorModeValue('brand.500', 'brand.300');
-
   return (
-    <Box w="full">
-      <Flex justify="space-between" align="center" mb={2}>
-        <Text fontSize="sm" fontWeight="medium" color={useColorModeValue('gray.700', 'gray.300')}>
+    <div className="w-full">
+      <div className="flex justify-between items-center mb-2">
+        <label className="text-sm font-medium text-white/80">
           {label}
-        </Text>
-        <Text
-          fontSize="sm"
-          fontFamily="mono"
-          px={2}
-          py={1}
-          rounded="md"
-          bg={useColorModeValue('gray.100', 'gray.700')}
-          color={useColorModeValue('gray.700', 'gray.300')}
-        >
+        </label>
+        <span className="text-sm font-mono px-2 py-1 rounded-md bg-black/20 text-white/80">
           {value}{unit}
-        </Text>
-      </Flex>
-      <Slider
-        value={value}
+        </span>
+      </div>
+      <input
+        type="range"
         min={min}
         max={max}
         step={step}
-        onChange={onChange}
-        focusThumbOnChange={false}
-      >
-        <SliderTrack bg={trackBg} h={2}>
-          <SliderFilledTrack bg={filledTrackBg} />
-        </SliderTrack>
-        <SliderThumb
-          bg={thumbBg}
-          boxSize={5}
-          _focus={{
-            boxShadow: `0 0 0 3px ${useColorModeValue('rgba(59, 130, 246, 0.3)', 'rgba(147, 197, 253, 0.3)')}`,
-          }}
-        />
-      </Slider>
-    </Box>
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.target.value))}
+        className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider-thumb"
+      />
+    </div>
   );
 }

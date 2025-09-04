@@ -1,26 +1,14 @@
 import React from 'react';
-import {
-  VStack,
-  Card,
-  CardBody,
-  Heading,
-  Button,
-  Flex,
-  Icon,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { Settings, Download, Copy, Shuffle } from 'lucide-react';
+import { Settings, Download, Copy } from 'lucide-react';
 import { TypographySettings } from '../types/typography';
-import { FontPairing } from '../data/fontPairings';
 import FontSelector from './FontSelector';
 import SliderControl from './SliderControl';
 import ResponsiveControls from './ResponsiveControls';
-import FontPairingGenerator from './FontPairingGenerator';
 
 interface ControlPanelProps {
   settings: TypographySettings;
   breakpoint: string;
-  designMode: 'glass' | 'neuro' | 'hybrid';
+  darkMode: boolean;
   onSettingsChange: (settings: Partial<TypographySettings>) => void;
   onBreakpointChange: (breakpoint: string) => void;
 }
@@ -28,21 +16,11 @@ interface ControlPanelProps {
 export default function ControlPanel({
   settings,
   breakpoint,
-  designMode,
+  darkMode,
   onSettingsChange,
   onBreakpointChange
 }: ControlPanelProps) {
   const [copied, setCopied] = React.useState(false);
-
-  const cardVariant = designMode === 'glass' ? 'glass' : designMode === 'neuro' ? 'neuro' : 'outline';
-  const buttonVariant = designMode === 'glass' ? 'glass' : designMode === 'neuro' ? 'neuro' : 'solid';
-
-  const handleApplyPairing = (pairing: FontPairing) => {
-    onSettingsChange({
-      headingFont: pairing.headingFont,
-      bodyFont: pairing.bodyFont
-    });
-  };
 
   const generateCSS = () => {
     return `/* Typography Settings */
@@ -86,183 +64,156 @@ export default function ControlPanel({
   };
 
   return (
-    <VStack spacing={6} align="stretch">
-      {/* Font Pairing Generator */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <FontPairingGenerator
-            designMode={designMode}
-            onApplyPairing={handleApplyPairing}
-            currentSettings={settings}
-          />
-        </CardBody>
-      </Card>
-
+    <div className="space-y-6">
       {/* Font Selection */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <Flex align="center" gap={2} mb={4}>
-            <Icon as={Settings} color="brand.400" />
-            <Heading size="sm">Font Selection</Heading>
-          </Flex>
-          <VStack spacing={4}>
-            <FontSelector
-              label="Heading Font"
-              value={settings.headingFont}
-              designMode={designMode}
-              onChange={(font) => onSettingsChange({ headingFont: font })}
-            />
-            <FontSelector
-              label="Body Font"
-              value={settings.bodyFont}
-              designMode={designMode}
-              onChange={(font) => onSettingsChange({ bodyFont: font })}
-            />
-          </VStack>
-        </CardBody>
-      </Card>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+        <div className="flex items-center gap-2 mb-4">
+          <Settings className="h-5 w-5 text-purple-300" />
+          <h2 className="text-lg font-semibold text-white">Font Selection</h2>
+        </div>
+        <div className="space-y-4">
+          <FontSelector
+            label="Heading Font"
+            value={settings.headingFont}
+            darkMode={darkMode}
+            onChange={(font) => onSettingsChange({ headingFont: font })}
+          />
+          <FontSelector
+            label="Body Font"
+            value={settings.bodyFont}
+            darkMode={darkMode}
+            onChange={(font) => onSettingsChange({ bodyFont: font })}
+          />
+        </div>
+      </div>
 
       {/* Size Controls */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <Heading size="sm" mb={4}>Font Sizes</Heading>
-          <VStack spacing={4}>
-            <SliderControl
-              label="Heading Size"
-              value={settings.headingSize}
-              designMode={designMode}
-              min={10}
-              max={120}
-              step={1}
-              unit="px"
-              onChange={(size) => onSettingsChange({ headingSize: size })}
-            />
-            <SliderControl
-              label="Body Size"
-              value={settings.bodySize}
-              designMode={designMode}
-              min={10}
-              max={32}
-              step={1}
-              unit="px"
-              onChange={(size) => onSettingsChange({ bodySize: size })}
-            />
-          </VStack>
-        </CardBody>
-      </Card>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+        <h2 className="text-lg font-semibold text-white mb-4">Font Sizes</h2>
+        <div className="space-y-4">
+          <SliderControl
+            label="Heading Size"
+            value={settings.headingSize}
+            darkMode={darkMode}
+            min={10}
+            max={120}
+            step={1}
+            unit="px"
+            onChange={(size) => onSettingsChange({ headingSize: size })}
+          />
+          <SliderControl
+            label="Body Size"
+            value={settings.bodySize}
+            darkMode={darkMode}
+            min={10}
+            max={32}
+            step={1}
+            unit="px"
+            onChange={(size) => onSettingsChange({ bodySize: size })}
+          />
+        </div>
+      </div>
 
       {/* Weight Controls */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <Heading size="sm" mb={4}>Font Weights</Heading>
-          <VStack spacing={4}>
-            <SliderControl
-              label="Heading Weight"
-              value={settings.headingWeight}
-              designMode={designMode}
-              min={100}
-              max={900}
-              step={100}
-              onChange={(weight) => onSettingsChange({ headingWeight: weight })}
-            />
-            <SliderControl
-              label="Body Weight"
-              value={settings.bodyWeight}
-              designMode={designMode}
-              min={100}
-              max={900}
-              step={100}
-              onChange={(weight) => onSettingsChange({ bodyWeight: weight })}
-            />
-          </VStack>
-        </CardBody>
-      </Card>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+        <h2 className="text-lg font-semibold text-white mb-4">Font Weights</h2>
+        <div className="space-y-4">
+          <SliderControl
+            label="Heading Weight"
+            value={settings.headingWeight}
+            darkMode={darkMode}
+            min={100}
+            max={900}
+            step={100}
+            onChange={(weight) => onSettingsChange({ headingWeight: weight })}
+          />
+          <SliderControl
+            label="Body Weight"
+            value={settings.bodyWeight}
+            darkMode={darkMode}
+            min={100}
+            max={900}
+            step={100}
+            onChange={(weight) => onSettingsChange({ bodyWeight: weight })}
+          />
+        </div>
+      </div>
 
       {/* Spacing Controls */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <Heading size="sm" mb={4}>Spacing</Heading>
-          <VStack spacing={4}>
-            <SliderControl
-              label="Heading Line Height"
-              value={settings.headingLineHeight}
-              designMode={designMode}
-              min={0.8}
-              max={2.0}
-              step={0.1}
-              onChange={(height) => onSettingsChange({ headingLineHeight: height })}
-            />
-            <SliderControl
-              label="Body Line Height"
-              value={settings.lineHeight}
-              designMode={designMode}
-              min={0.8}
-              max={2.0}
-              step={0.1}
-              onChange={(height) => onSettingsChange({ lineHeight: height })}
-            />
-            <SliderControl
-              label="Heading Letter Spacing"
-              value={settings.headingLetterSpacing}
-              designMode={designMode}
-              min={-5}
-              max={5}
-              step={0.1}
-              unit="px"
-              onChange={(spacing) => onSettingsChange({ headingLetterSpacing: spacing })}
-            />
-            <SliderControl
-              label="Body Letter Spacing"
-              value={settings.letterSpacing}
-              designMode={designMode}
-              min={-5}
-              max={5}
-              step={0.1}
-              unit="px"
-              onChange={(spacing) => onSettingsChange({ letterSpacing: spacing })}
-            />
-          </VStack>
-        </CardBody>
-      </Card>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+        <h2 className="text-lg font-semibold text-white mb-4">Spacing</h2>
+        <div className="space-y-4">
+          <SliderControl
+            label="Heading Line Height"
+            value={settings.headingLineHeight}
+            darkMode={darkMode}
+            min={0.8}
+            max={2.0}
+            step={0.1}
+            onChange={(height) => onSettingsChange({ headingLineHeight: height })}
+          />
+          <SliderControl
+            label="Body Line Height"
+            value={settings.lineHeight}
+            darkMode={darkMode}
+            min={0.8}
+            max={2.0}
+            step={0.1}
+            onChange={(height) => onSettingsChange({ lineHeight: height })}
+          />
+          <SliderControl
+            label="Heading Letter Spacing"
+            value={settings.headingLetterSpacing}
+            darkMode={darkMode}
+            min={-5}
+            max={5}
+            step={0.1}
+            unit="px"
+            onChange={(spacing) => onSettingsChange({ headingLetterSpacing: spacing })}
+          />
+          <SliderControl
+            label="Body Letter Spacing"
+            value={settings.letterSpacing}
+            darkMode={darkMode}
+            min={-5}
+            max={5}
+            step={0.1}
+            unit="px"
+            onChange={(spacing) => onSettingsChange({ letterSpacing: spacing })}
+          />
+        </div>
+      </div>
 
       {/* Responsive Controls */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <Heading size="sm" mb={4}>Preview Size</Heading>
-          <ResponsiveControls
-            activeBreakpoint={breakpoint}
-            designMode={designMode}
-            onBreakpointChange={onBreakpointChange}
-          />
-        </CardBody>
-      </Card>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+        <h2 className="text-lg font-semibold text-white mb-4">Preview Size</h2>
+        <ResponsiveControls
+          activeBreakpoint={breakpoint}
+          darkMode={darkMode}
+          onBreakpointChange={onBreakpointChange}
+        />
+      </div>
 
       {/* Export Controls */}
-      <Card variant={cardVariant}>
-        <CardBody>
-          <Heading size="sm" mb={4}>Export</Heading>
-          <VStack spacing={3}>
-            <Button
-              leftIcon={<Copy size={16} />}
-              onClick={copyCSS}
-              variant={buttonVariant}
-              colorScheme="blue"
-              w="full"
-            >
-              {copied ? 'Copied!' : 'Copy CSS'}
-            </Button>
-            <Button
-              leftIcon={<Download size={16} />}
-              onClick={downloadCSS}
-              variant={buttonVariant}
-              colorScheme="green"
-              w="full"
-            >
-              Download CSS
-            </Button>
-          </VStack>
-        </CardBody>
-      </Card>
-    </VStack>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+        <h2 className="text-lg font-semibold text-white mb-4">Export</h2>
+        <div className="space-y-3">
+          <button
+            onClick={copyCSS}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+          >
+            <Copy size={16} />
+            {copied ? 'Copied!' : 'Copy CSS'}
+          </button>
+          <button
+            onClick={downloadCSS}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+          >
+            <Download size={16} />
+            Download CSS
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

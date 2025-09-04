@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import design system styles */
-@import './styles/designSystem.css';
-@import './styles/accessibility.css';
-@import './styles/darkTheme.css';
-
-/* Base responsive styles */
 @layer base {
   html {
     font-size: 16px;
@@ -20,71 +14,42 @@
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: var(--text-primary, #000000);
-    background-color: var(--bg-primary, #ffffff);
   }
 }
 
-/* Touch target utilities */
-@layer utilities {
-  .min-h-touch {
-    min-height: 44px;
-  }
-  
-  .min-w-touch {
-    min-width: 44px;
-  }
-  
-  /* Skip link for accessibility */
-  .skip-link {
-    position: absolute;
-    top: -40px;
-    left: 6px;
-    background: var(--interactive-primary, #0056b3);
-    color: white;
-    padding: 8px 16px;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: 600;
-    z-index: 1000;
-    transition: top 0.3s ease;
-  }
-  
-  .skip-link:focus {
-    top: 6px;
-  }
-  
-  /* Focus styles for accessibility */
-  .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
-  }
-  
-  /* Remove focus for mouse users */
-  .focus-ring:focus:not(:focus-visible) {
-    outline: none;
-    box-shadow: none;
-  }
+/* Custom slider styles */
+.slider-thumb::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
 }
 
-/* Line clamp utility */
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+.slider-thumb::-webkit-slider-thumb:hover {
+  background: #2563eb;
+  transform: scale(1.1);
 }
 
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+.slider-thumb::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: #3b82f6;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
 }
 
 /* Smooth scrolling */
 .overflow-y-auto {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e0 #f7fafc;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
 .overflow-y-auto::-webkit-scrollbar {
@@ -92,68 +57,26 @@
 }
 
 .overflow-y-auto::-webkit-scrollbar-track {
-  background: #f7fafc;
-  border-radius: 4px;
+  background: transparent;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb {
-  background-color: #cbd5e0;
+  background-color: rgba(255, 255, 255, 0.3);
   border-radius: 4px;
-  border: 2px solid #f7fafc;
 }
 
 .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-  background-color: #a0aec0;
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Enhanced Focus Indicators */
+/* Focus styles */
 *:focus-visible {
-  outline: 3px solid var(--focus-ring-color, #0056b3);
+  outline: 2px solid #3b82f6;
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 *:focus:not(:focus-visible) {
   outline: none;
-}
-
-/* Ensure minimum touch target size */
-button, 
-input[type="button"], 
-input[type="submit"], 
-input[type="reset"],
-input[type="range"],
-select,
-a[role="button"],
-[role="button"] {
-  min-height: 44px;
-  min-width: 44px;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  button, 
-  input[type="button"], 
-  input[type="submit"], 
-  input[type="reset"],
-  input[type="range"],
-  select,
-  a[role="button"],
-  [role="button"] {
-    min-height: 48px;
-    min-width: 48px;
-  }
-}
-
-/* Print styles */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  
-  body {
-    font-size: 12pt;
-    line-height: 1.4;
-  }
 }
 
 /* Reduced motion support */

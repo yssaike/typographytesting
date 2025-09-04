@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button, ButtonGroup, Icon } from '@chakra-ui/react';
 import { Monitor, Tablet, Smartphone } from 'lucide-react';
 import { ResponsiveBreakpoint } from '../types/typography';
 
 interface ResponsiveControlsProps {
   activeBreakpoint: string;
-  designMode: 'glass' | 'neuro' | 'hybrid';
+  darkMode: boolean;
   onBreakpointChange: (breakpoint: string) => void;
 }
 
@@ -23,29 +22,30 @@ const BREAKPOINT_ICONS = {
 
 export default function ResponsiveControls({
   activeBreakpoint,
-  designMode,
+  darkMode,
   onBreakpointChange
 }: ResponsiveControlsProps) {
-  const buttonVariant = designMode === 'glass' ? 'glass' : designMode === 'neuro' ? 'neuro' : 'outline';
-
   return (
-    <ButtonGroup isAttached w="full" variant={buttonVariant}>
-      {BREAKPOINTS.map((breakpoint) => {
+    <div className="flex rounded-lg overflow-hidden border border-white/20">
+      {BREAKPOINTS.map((breakpoint, index) => {
         const IconComponent = BREAKPOINT_ICONS[breakpoint.name as keyof typeof BREAKPOINT_ICONS];
+        const isActive = activeBreakpoint === breakpoint.name;
+        
         return (
-          <Button
+          <button
             key={breakpoint.name}
             onClick={() => onBreakpointChange(breakpoint.name)}
-            colorScheme={activeBreakpoint === breakpoint.name ? 'brand' : 'gray'}
-            variant={activeBreakpoint === breakpoint.name ? 'solid' : buttonVariant}
-            flex={1}
-            leftIcon={<Icon as={IconComponent} />}
-            size="sm"
+            className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium transition-colors ${
+              isActive
+                ? 'bg-blue-500 text-white'
+                : 'bg-white/10 text-white/80 hover:bg-white/20'
+            } ${index > 0 ? 'border-l border-white/20' : ''}`}
           >
-            {breakpoint.label}
-          </Button>
+            <IconComponent size={16} />
+            <span className="hidden sm:inline">{breakpoint.label}</span>
+          </button>
         );
       })}
-    </ButtonGroup>
+    </div>
   );
 }

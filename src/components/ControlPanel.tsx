@@ -66,10 +66,10 @@ export default function ControlPanel({
   return (
     <div className="space-y-6">
       {/* Font Selection */}
-      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10">
         <div className="flex items-center gap-2 mb-4">
           <Settings className="h-5 w-5 text-purple-300" />
-          <h2 className="text-lg font-semibold text-white">Font Selection</h2>
+          <h2 className="text-lg font-semibold text-white dark:text-gray-100">Font Selection</h2>
         </div>
         <div className="space-y-4">
           <FontSelector
@@ -88,8 +88,8 @@ export default function ControlPanel({
       </div>
 
       {/* Size Controls */}
-      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
-        <h2 className="text-lg font-semibold text-white mb-4">Font Sizes</h2>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10">
+        <h2 className="text-lg font-semibold text-white dark:text-gray-100 mb-4">Font Sizes</h2>
         <div className="space-y-4">
           <SliderControl
             label="Heading Size"
@@ -115,8 +115,8 @@ export default function ControlPanel({
       </div>
 
       {/* Weight Controls */}
-      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
-        <h2 className="text-lg font-semibold text-white mb-4">Font Weights</h2>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10">
+        <h2 className="text-lg font-semibold text-white dark:text-gray-100 mb-4">Font Weights</h2>
         <div className="space-y-4">
           <SliderControl
             label="Heading Weight"
@@ -140,8 +140,8 @@ export default function ControlPanel({
       </div>
 
       {/* Spacing Controls */}
-      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
-        <h2 className="text-lg font-semibold text-white mb-4">Spacing</h2>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10">
+        <h2 className="text-lg font-semibold text-white dark:text-gray-100 mb-4">Spacing</h2>
         <div className="space-y-4">
           <SliderControl
             label="Heading Line Height"
@@ -185,8 +185,8 @@ export default function ControlPanel({
       </div>
 
       {/* Responsive Controls */}
-      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
-        <h2 className="text-lg font-semibold text-white mb-4">Preview Size</h2>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10">
+        <h2 className="text-lg font-semibold text-white dark:text-gray-100 mb-4">Preview Size</h2>
         <ResponsiveControls
           activeBreakpoint={breakpoint}
           darkMode={darkMode}
@@ -195,8 +195,8 @@ export default function ControlPanel({
       </div>
 
       {/* Export Controls */}
-      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20">
-        <h2 className="text-lg font-semibold text-white mb-4">Export</h2>
+      <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10">
+        <h2 className="text-lg font-semibold text-white dark:text-gray-100 mb-4">Export</h2>
         <div className="space-y-3">
           <button
             onClick={copyCSS}

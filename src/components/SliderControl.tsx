@@ -24,10 +24,10 @@ export default function SliderControl({
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">
-        <label className="text-sm font-medium text-white/80">
+        <label className="text-sm font-medium text-white/80 dark:text-gray-300">
           {label}
         </label>
-        <span className="text-sm font-mono px-2 py-1 rounded-md bg-black/20 text-white/80">
+        <span className="text-sm font-mono px-2 py-1 rounded-md bg-black/20 dark:bg-white/10 text-white/80 dark:text-gray-300">
           {value}{unit}
         </span>
       </div>

@@ -41,10 +41,10 @@ export default function TypographyPreview({ settings, breakpoint, darkMode }: Ty
   return (
     <div className="h-full">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold text-white">
+        <h2 className="text-lg font-semibold text-white dark:text-gray-100">
           Live Preview
         </h2>
-        <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded capitalize">
+        <span className="px-2 py-1 bg-blue-500 dark:bg-blue-600 text-white text-xs rounded capitalize">
           {breakpoint} ({maxWidth})
         </span>
       </div>
@@ -53,10 +53,10 @@ export default function TypographyPreview({ settings, breakpoint, darkMode }: Ty
         className="mx-auto h-full"
         style={{ maxWidth }}
       >
-        <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 h-full overflow-y-auto">
+        <div className="bg-white/25 dark:bg-black/25 backdrop-blur-lg rounded-lg p-6 border border-white/20 dark:border-white/10 h-full overflow-y-auto">
           <div className="space-y-8">
             {/* Title Section */}
-            <div className="pb-6 border-b border-white/20">
+            <div className="pb-6 border-b border-white/20 dark:border-white/10">
               <h1 style={headingStyle} className="mb-3 text-gray-900 dark:text-gray-100">
                 {SAMPLE_CONTENT.headline}
               </h1>
@@ -94,7 +94,7 @@ export default function TypographyPreview({ settings, breakpoint, darkMode }: Ty
             </div>
 
             {/* Interactive Elements */}
-            <div className="pt-6 border-t border-white/20">
+            <div className="pt-6 border-t border-white/20 dark:border-white/10">
               <h3 style={subheadingStyle} className="mb-4 text-gray-900 dark:text-gray-100">
                 Interactive Elements
               </h3>
@@ -108,7 +108,7 @@ export default function TypographyPreview({ settings, breakpoint, darkMode }: Ty
                 </button>
                 
                 <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                  <label className="block text-sm font-medium mb-2 text-gray-800 dark:text-gray-200">
                     Email Address
                   </label>
                   <input
@@ -148,7 +148,7 @@ export default function TypographyPreview({ settings, breakpoint, darkMode }: Ty
             </div>
 
             {/* Caption */}
-            <div className="pt-6 border-t border-white/20">
+            <div className="pt-6 border-t border-white/20 dark:border-white/10">
               <p
                 style={{ ...bodyStyle, fontSize: `${Math.round(settings.bodySize * 0.85)}px` }}
                 className="text-gray-500 dark:text-gray-400"

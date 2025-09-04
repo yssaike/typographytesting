@@ -21,7 +21,13 @@ const DEFAULT_SETTINGS: TypographySettings = {
 function App() {
   const [settings, setSettings] = useState<TypographySettings>(DEFAULT_SETTINGS);
   const [breakpoint, setBreakpoint] = useState('desktop');
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('darkMode') === 'true' || 
+             (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+    return false;
+  });
 
   // Load initial fonts
   useEffect(() => {
@@ -29,13 +35,22 @@ function App() {
     loadGoogleFont(settings.bodyFont);
   }, [settings.headingFont, settings.bodyFont]);
 
+  // Save dark mode preference and apply to document
+  useEffect(() => {
+    localStorage.setItem('darkMode', darkMode.toString());
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
   const updateSettings = (newSettings: Partial<TypographySettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
   };
 
   return (
-    <div className={`min-h-screen ${darkMode ? 'dark' : ''}`}>
-      <div className="bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white/25 dark:bg-black/25 backdrop-blur-lg border-b border-white/20 dark:border-white/10">
           <div className="max-w-7xl mx-auto px-4 py-4">
@@ -93,7 +108,6 @@ function App() {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 }

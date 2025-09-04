@@ -33,25 +33,25 @@ export default function FontSelector({ label, value, darkMode, onChange }: FontS
           const target = e.target as HTMLSelectElement;
           if (target.value) handleFontPreview(target.value);
         }}
-        className="w-full px-3 py-2 bg-white/20 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="w-full px-3 py-2 bg-white/20 dark:bg-black/20 border border-white/30 dark:border-white/20 rounded-lg text-white dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
         style={{ fontFamily: previewFont || value }}
       >
         {FONT_FAMILIES.map((font) => (
-          <option key={font} value={font} style={{ fontFamily: font, color: 'black' }}>
+          <option key={font} value={font} style={{ fontFamily: font, color: darkMode ? 'white' : 'black', backgroundColor: darkMode ? '#1f2937' : 'white' }}>
             {font}
           </option>
         ))}
       </select>
       
       {/* Font Preview */}
-      <div className="mt-3 p-3 rounded-md bg-black/20 border border-white/20">
+      <div className="mt-3 p-3 rounded-md bg-black/20 dark:bg-white/10 border border-white/20 dark:border-white/10">
         <div
-          className="text-lg text-white"
+          className="text-lg text-white dark:text-gray-100"
           style={{ fontFamily: previewFont || value }}
         >
           The quick brown fox jumps over the lazy dog
         </div>
-        <div className="text-xs text-white/60 mt-1">
+        <div className="text-xs text-white/60 dark:text-gray-400 mt-1">
           Preview: {previewFont || value}
         </div>
       </div>

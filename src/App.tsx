@@ -50,7 +50,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700">
+    <div className="h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 dark:from-gray-900 dark:via-gray-800 dark:to-gray-700 overflow-hidden">
         {/* Header */}
         <header className="sticky top-0 z-40 bg-white/25 dark:bg-black/25 backdrop-blur-lg border-b border-white/20 dark:border-white/10">
           <div className="max-w-7xl mx-auto px-4 py-4">
@@ -81,11 +81,11 @@ function App() {
         </header>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-[calc(100vh-120px)]">
+        <div className="max-w-7xl mx-auto px-4 py-6 h-[calc(100vh-88px)]">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
             {/* Controls Panel */}
             <div className="lg:col-span-2">
-              <div className="h-full overflow-y-auto">
+              <div className="h-full overflow-y-auto pr-2">
                 <ControlPanel
                   settings={settings}
                   breakpoint={breakpoint}
@@ -98,7 +98,7 @@ function App() {
 
             {/* Preview Panel */}
             <div className="lg:col-span-3">
-              <div className="h-full overflow-y-auto">
+              <div className="h-full overflow-y-auto pl-2">
                 <TypographyPreview
                   settings={settings}
                   breakpoint={breakpoint}
